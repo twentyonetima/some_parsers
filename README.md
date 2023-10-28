@@ -6,6 +6,36 @@ This project is a microservice written in python 3 that collects data on respect
 - Data markup matrix (формуляр): [link](https://docs.google.com/spreadsheets/d/1HoQMST3Zqn7sm4Scr4NeagTL6XeDFkxHM9nQWxcuZ-w/edit#gid=0)
 - Google drive: [link](https://drive.google.com/drive/folders/1UPxVW1QRJuxgANFFt-LWFpXmPx8Q2XSP)
 
+## Project Structure
+```console
+├── core  // individual scripts for parsing each resource
+│   ├── blacklist  // scripts in which unscrupulous organizations are parsed
+│   │   ├── cbr_unlicensing.py
+│   │   ├── cbr_warninglist.py
+│   │   ├── govkz_bannedbanks_2level.py
+│   │   ├── govkz_bannedbanks.py
+│   │   ├── govkz_banned_fin_organizations.py
+│   │   ├── govkz_refund_organizations.py
+│   │   └──  govkz_unfairactivity_organization.py
+│   │   
+│   └── whitelist  // scripts in which reliable organizations are parsed
+│       ├── cbr_advisors.py
+│       ├── cbr_brokers.py
+│       ├── cbr_dealers.py
+│       ├── cbr_depositaries.py
+│       ├── cbr_forex.py
+│       ├── cbr_reestersavers.py
+│       ├── cbr_specdepositaries.py
+│       ├── cbr_trust.py
+│       ├── govkz_individual_banking_transactions.py
+│       ├── govkz_securities_transactions.py
+│       └──  national_bank_kz.py
+├── main.py  // The program startup file is the main logic of the message broker
+├── models.py // pydantic models in which data from scripts is compiled
+├── README.md
+└── requirements.txt
+
+```
 ## Deploy Process
 At the moment, the deployment is carried out manually via scm, followed by launching the daemon via ssh (as **root** user).
 - Server on which the microservice is currently hosted: **178.170.221.13**
