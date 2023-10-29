@@ -20,14 +20,13 @@ def data_unit_iterator() -> BaseDataUnit:
                 row.iloc[3] = ""
             if not isinstance(row.iloc[4], str):
                 row.iloc[4] = ""
-
             data_unit = BaseDataUnit(
                 type='black_list',
-                cbr_license_revocation_date=row.iloc[0],
-                name=row.iloc[1],
-                legal_entity_address=row.iloc[2],
-                social_networks=row.iloc[3],
-                cbr_license_revokation_reason=row.iloc[4],
+                cbr_license_revocation_date=row['DT'],
+                name=row['Name'],
+                legal_entity_address=row['ADDR'],
+                social_networks=row['Site'],
+                cbr_license_revokation_reason=row['Sign'],
             )
             yield data_unit.model_dump_json()
     except Exception as e:
