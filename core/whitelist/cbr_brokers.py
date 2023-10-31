@@ -14,8 +14,8 @@ def data_unit_iterator() -> BaseDataUnit:
         try:
             data_unit = BaseDataUnit(
                 type='white_list',
-                name=row.iloc[2],
-                name_full=row.iloc[1],
+                name=row.iloc[1],
+                inn=row.iloc[2],
                 legal_entity_address=row.iloc[5],
                 social_networks=row.iloc[6],
                 phones=row.iloc[7],
