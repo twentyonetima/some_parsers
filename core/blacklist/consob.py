@@ -12,13 +12,14 @@ def data_unit_iterator() -> BaseDataUnit:
     response.encoding = 'utf-8'
     bs = BeautifulSoup(response.text, "lxml")
 
-    td = bs.find_all('li')
-    text = []
+    td = bs.select('li b')
+    names = []
 
     for i in td:
-        text.append(i.text)
-    text = text
-    for i in text:
+        name = i.text
+        if name:
+            names.append(name)
+    for i in names:
         try:
             data_unit = BaseDataUnit(
                 type='black_list',
