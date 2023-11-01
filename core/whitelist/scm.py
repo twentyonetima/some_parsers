@@ -61,4 +61,3 @@ def data_unit_iterator() -> BaseDataUnit:
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row {i}")
-

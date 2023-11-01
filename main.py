@@ -8,7 +8,8 @@ from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, scm,
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
-                            govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization)
+                            govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
+                            asc, fsa, sfc, amf, sca, consob)
 
 logging.basicConfig(
                     filename='ETL.log',
@@ -47,6 +48,12 @@ def publisher(func: callable, source_name: str) -> None:
 
 while True:
     logging.info(f"Loop of scraping has been started {datetime.now()}")
+    publisher(consob.data_unit_iterator(), "CONSOB")
+    publisher(sca.data_unit_iterator(), "Securities and Commodities Authority")
+    publisher(amf.data_unit_iterator(), "AMF")
+    publisher(sfc.data_unit_iterator(), "Securities and Futures Commission")
+    publisher(fsa.data_unit_iterator(), "Financial Services Agency")
+    publisher(asc.data_unit_iterator(), "Alberta Securities Commission")
     publisher(scm.data_unit_iterator(), "Securities Commission Malaysia")
     publisher(national_bank_kz.data_unit_iterator(), "Национальный банк РК")
     publisher(cbr_forex.data_unit_iterator(), "ЦБ РФ Список форекс-дилеров")
