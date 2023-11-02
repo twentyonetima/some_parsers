@@ -9,14 +9,23 @@ from models import BaseDataUnit
 
 def data_unit_iterator() -> BaseDataUnit:
     translator = Translator()
-
-    for j in range(148):
+    index = 0
+    end = False
+    while not end:
         response = requests.get(
-            f'https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde?page={j}')
+            f'https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde?page={index}')
+
         response.encoding = 'utf-8'
         bs = BeautifulSoup(response.text, "lxml")
         h2 = bs.find_all('h2')
         td = bs.find_all('td', attrs={'data-mobile': 'Catégorie'})
+
+        if len(td) == 0 or index == 1:
+            end = True
+            continue
+        print(f"page {index} is processing...")
+        index += 1
+
         date = bs.find_all('div', 'date')
         h2_text = []
         td_text = []
@@ -32,7 +41,7 @@ def data_unit_iterator() -> BaseDataUnit:
             try:
                 date_text.append(translator.translate(i.text, dest='ru').text)
             except:
-                td_text.append(i.text)
+                date_text.append(i.text)
 
         for i in range(len(h2_text)):
             try:
@@ -41,6 +50,7 @@ def data_unit_iterator() -> BaseDataUnit:
                     source='https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde?',
                     name=h2_text[i],
                     remarks=td_text[i],
+                    date_publish=date_text[i],
                 )
                 yield data_unit.model_dump_json()
             except Exception as e:

@@ -4,12 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 from googletrans import Translator
 
+from core.utils.translate import translate
 from models import BaseDataUnit
 
 
 def data_unit_iterator() -> BaseDataUnit:
-    translator = Translator()
-
     response = requests.get('https://www.sca.gov.ae/en/open-data/violations-and-warnings.aspx')
     response.encoding = 'utf-8'
     bs = BeautifulSoup(response.text, "lxml")
@@ -24,16 +23,11 @@ def data_unit_iterator() -> BaseDataUnit:
 
     for i in text:
         try:
-            remarks = translator.translate(i[2], dest='ru').text
-        except:
-            remarks = i[2]
-
-        try:
             data_unit = BaseDataUnit(
                 type='black_list',
                 source='https://www.sca.gov.ae/en/open-data/violations-and-warnings.aspx',
                 name=i[0],
-                remarks=remarks,
+                remarks=translate(i[2]),
             )
             yield data_unit.model_dump_json()
         except Exception as e:

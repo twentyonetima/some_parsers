@@ -23,7 +23,6 @@ def data_unit_iterator() -> BaseDataUnit:
 
     for i in td:
         text.append(i.text)
-    data = []
     text = [text[i:i + 3] for i in range(0, len(text), 3)]
     for sublist in text:
         try:

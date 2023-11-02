@@ -2,8 +2,8 @@ import logging
 
 import requests
 from bs4 import BeautifulSoup
-from googletrans import Translator
 
+from core.utils.translate import translate
 from models import BaseDataUnit
 
 
@@ -12,7 +12,6 @@ def data_unit_iterator() -> BaseDataUnit:
     response = requests.get(url)
     response.encoding = 'utf-8'
     bs = BeautifulSoup(response.text, "lxml")
-    translator = Translator()
 
     td = bs.find_all('td')
     text = []
@@ -22,11 +21,7 @@ def data_unit_iterator() -> BaseDataUnit:
 
     text = [text[i:i + 5] for i in range(0, len(text), 5)]
     for i, sublist in enumerate(text):
-        try:
-            remarks = translator.translate(sublist[1], dest='ru').text
-        except Exception as e:
-            print(f'Error while translate: {e}')
-            remarks = sublist[1]
+        remarks = translate(sublist[1])
         try:
             data_unit = BaseDataUnit(
                 type='black_list',
