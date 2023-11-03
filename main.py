@@ -6,6 +6,7 @@ import pika
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, scm,
+                            bafin,
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
@@ -48,6 +49,7 @@ def publisher(func: callable, source_name: str) -> None:
 
 while True:
     logging.info(f"Loop of scraping has been started {datetime.now()}")
+    publisher(bafin.data_unit_iterator(), "BAFIN")
     publisher(consob.data_unit_iterator(), "CONSOB")
     publisher(sca.data_unit_iterator(), "Securities and Commodities Authority")
     publisher(amf.data_unit_iterator(), "AMF")
