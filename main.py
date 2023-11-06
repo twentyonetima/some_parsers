@@ -40,7 +40,6 @@ def publisher(func: callable, source_name: str) -> None:
                                   )
             data_units_load_counter += 1
         logging.info(f"ETL process with source <{source_name}> has been finished. Amount of dataunits for parsing session (this parser and before them): {data_units_load_counter}")
-        connection.close()
         time.sleep(WINDOW_BETWEEN_SOURCES_SECONDS)
     except Exception as e:
         logging.error(f"Current resource was stopped cause of global error: {e}")
