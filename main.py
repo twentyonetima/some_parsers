@@ -10,7 +10,7 @@ from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
-                            consob, sca, amf, sfc, fsa, asc)
+                            govkz_new_reestr, consob, sca, amf, sfc, fsa, asc)
 
 logging.basicConfig(
                     filename='ETL.log',
@@ -78,6 +78,7 @@ while True:
     publisher(govkz_unfairactivity_organization.data_unit_iterator(), "GOV KZ Список организаций, имеющих признаки недобросовестной деятельности")
     publisher(cbr_unlicensing.data_unit_iterator(), "ЦБ РФ Реестр аннулированных лицензий профессиональных участников рынка ценных бумаг")
     publisher(cbr_warninglist.data_unit_iterator(), "ЦБ РФ Список компаний с выявленными признаками нелегальной деятельности на финансовом рынке")
+    publisher(govkz_new_reestr.data_unit_iterator(), "Реестр финансовых пирамид")
 
     logging.info(f"Loop of scraping has been finished {datetime.now()}")
     time.sleep(WINDOW_BETWEEN_MESSAGES_SECONDS)

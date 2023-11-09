@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import PyPDF2
 import io
 
+link_to_source = 'https://www.gov.kz/memleket/entities/ardfm/documents/details/318075?lang=ru'
+
 
 def data_unit_iterator() -> BaseDataUnit:
     url = 'https://www.gov.kz/uploads/2023/9/1/a56061566f061ebe19c522bc1926c9ca_original.288597.PDF'
@@ -26,6 +28,8 @@ def data_unit_iterator() -> BaseDataUnit:
                 continue
             string = string.split(' ')
             record = [" ".join(string[1:-1]), string[-1]]
+            if 'нет информации о наличии сайта' in record[1]:
+                record[1] = ''
             try:
                 data_unit = data_transformer(record)
                 yield data_unit.model_dump_json()
@@ -37,6 +41,8 @@ def data_unit_iterator() -> BaseDataUnit:
 def data_transformer(record) -> BaseDataUnit:
     data_unit = BaseDataUnit(
         type='black_list',
+        country='Казахстан',
+        source=link_to_source,
         name=record[0],
         social_networks=record[1],
     )
