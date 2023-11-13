@@ -117,10 +117,6 @@ parse_part_one()  # Запуск паринга
 def data_unit_iterator():
     global temp_list_file
 
-    # new_dict = {
-    #     f'{full_url}': []
-    # }
-
     to_del_duplicates = {}
 
     for line in temp_list_file:
@@ -146,19 +142,3 @@ def data_unit_iterator():
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row")
-
-        # new_dict[f'{full_url}'].append({'name': key, 'type': ref, 'date_publish': translate(to_del_duplicates[key][1]),
-        #                                 'govkz_type_of_activity': translate(to_del_duplicates[key][0])})
-
-    # return new_dict
-
-# def save_to_file_as_json(data_dict, full_url_to_name):
-#     json_object = json.dumps(data_dict, ensure_ascii=False, indent=4)
-#
-#     with open(f'{slugify(full_url_to_name)}.json', 'w', encoding='utf-8') as file:
-#         file.write(json_object)
-
-# if __name__ == '__main__':
-#     parse_part_one()
-#     new_dict_to_save = save_to_dict(full_url)
-#     save_to_file_as_json(new_dict_to_save, full_url)

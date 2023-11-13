@@ -67,7 +67,6 @@ def from_main_url(url):
             new_ref = previous_ref
 
 
-# if __name__ == '__main__':
 from_main_url(start_url)
 
 
@@ -98,15 +97,3 @@ def data_unit_iterator():
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row")
-
-        # if firm_as_dict in dict_to_save[url]:
-        #     pass
-        # else:
-        # dict_to_save[url].append(firm_as_dict)
-
-    # json_object = json.dumps(dict_to_save, ensure_ascii=False, indent=4)
-
-    # file_to = f'{slugify(url)[:51]}.json'
-
-    # with open(file_to, 'w', encoding='utf-8') as json_file:
-    #     json_file.write(json_object)

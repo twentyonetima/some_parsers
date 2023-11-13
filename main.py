@@ -6,7 +6,7 @@ import pika
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, base_1, base_5, base_9, base_10
+                            scm, base_1, base_3, base_5, base_9, base_10
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
@@ -81,6 +81,7 @@ while True:
     publisher(govkz_new_reestr.data_unit_iterator(), "Реестр финансовых пирамид")
     publisher(base_1.data_unit_iterator(), "FMA Лицензированные и подотчетные лица")
     publisher(base_2.data_unit_iterator(), "FMA Предупреждения и оповещения")
+    publisher(base_3.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия")
     publisher(base_5.data_unit_iterator(), "Реестр поставщиков финансовых услуг")
     publisher(base_6.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады")
     publisher(base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры")

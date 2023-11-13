@@ -106,7 +106,6 @@ def main_url_proceed(url):
                 parse_as_extended(item)
 
 
-# if __name__ == '__main__':
 main_url_proceed(URL_START)
 
 

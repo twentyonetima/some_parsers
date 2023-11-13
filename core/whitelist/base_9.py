@@ -105,7 +105,6 @@ def take_main_url():
                 append_save_as_data(data_set)
 
 
-# if __name__ == '__main__':
 take_main_url()
 
 

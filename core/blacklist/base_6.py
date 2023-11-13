@@ -34,29 +34,6 @@ def append_save_as_data(data_set):
     temp_list_file.append(';'.join(data_set))
 
 
-# def save_as_json():
-#     global temp_list_file
-
-# dict_to_save = {
-#     url: []
-# }
-# for line in temp_list_file:
-#     data = line.strip().split(';')
-#     firm_as_dict = dict(zip(NAME_SET, data))
-
-# if firm_as_dict in dict_to_save[url]:
-#     pass
-# else:
-#     dict_to_save[url].append(firm_as_dict)
-
-# json_object = json.dumps(dict_to_save, ensure_ascii=False, indent=4)
-
-# file_to = f'{slugify(url)[:51]}.json'
-
-# with open(file_to, 'w', encoding='utf-8') as json_file:
-#     json_file.write(json_object)
-
-
 def take_firm_url(url):
     global ref
 
@@ -172,10 +149,6 @@ take_main_url(URL_START)
 
 def data_unit_iterator():
     global temp_list_file
-
-    # dict_to_save = {
-    #     url: []
-    # }
 
     result_list = []
 

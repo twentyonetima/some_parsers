@@ -69,7 +69,6 @@ def take_url(url):
             current_page += 1
 
 
-# if __name__ == '__main__':
 take_url(URL_START)
 
 

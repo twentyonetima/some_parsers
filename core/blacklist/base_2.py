@@ -191,9 +191,7 @@ start_parse(FULL_URL)
 def data_unit_iterator():
     """works fine"""
     name_set_to_save = [key for key in NAME_SET]
-    # dict_to_save = {
-    #     url: []
-    # }
+
     for line in temp_list_file:
         data = line.strip().split(';')
         firm_as_dict = dict(zip(name_set_to_save, data))
@@ -218,14 +216,3 @@ def data_unit_iterator():
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row")
-
-    # json_object = json.dumps(dict_to_save, ensure_ascii=False, indent=4)
-
-    # file_to = f'{slugify(url)[:51]}.json'
-
-    # with open(file_to, 'w', encoding='utf-8') as json_file:
-    #     json_file.write(json_object)
-
-# if __name__ == '__main__':
-#     start_parse(FULL_URL)
-#     data_unit_iterator()
