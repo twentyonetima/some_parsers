@@ -4,8 +4,8 @@ beautifulsoup4==4.12.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
 et-xmlfile==1.1.0
-h11==0.14.0
-idna==3.4
+h11
+idna
 jdcal==1.4.1
 numpy==1.26.0
 openpyexcel==2.5.14
@@ -35,3 +35,5 @@ wsproto==1.2.0
 xlrd==2.0.1
 googletrans==4.0.0-rc1
 lxml==4.9.3
+deep-traslator
+slugify

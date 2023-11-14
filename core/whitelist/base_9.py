@@ -12,6 +12,7 @@ import logging
 from bs4 import BeautifulSoup
 from deep_translator import GoogleTranslator
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from slugify import slugify
 
 from models import BaseDataUnit
@@ -92,7 +93,11 @@ def take_main_url():
     for key in links_to_parse:
         url = links_to_parse[key]
 
-        driver = webdriver.Chrome()
+        service = Service(driver='/chromedriver/')
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {"download.default_directory": "/"}
+        chrome_options.add_experimental_option("prefs", prefs)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         browser = driver
         browser.get(url)
 

@@ -9,6 +9,7 @@ import logging
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from slugify import slugify
 
@@ -37,7 +38,12 @@ def text_cleaner(text_to_clean):
 def take_url(url):
     global ref
 
-    driver_1 = webdriver.Chrome()
+    service = Service(driver='/chromedriver/')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": "/"}
+    chrome_options.add_experimental_option("prefs", prefs)
+    driver_1 = webdriver.Chrome(service=service, options=chrome_options)
+
     browser = driver_1
     browser.get(url)
 

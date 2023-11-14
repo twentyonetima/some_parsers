@@ -7,6 +7,7 @@ import logging
 from bs4 import BeautifulSoup
 import json
 
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from slugify import slugify
 from selenium import webdriver
@@ -25,7 +26,11 @@ temp_list_file = []
 
 
 def from_main_url(url):
-    driver = webdriver.Chrome()
+    service = Service(driver='/chromedriver/')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": "/"}
+    chrome_options.add_experimental_option("prefs", prefs)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     browser = driver
     browser.get(url)
 
