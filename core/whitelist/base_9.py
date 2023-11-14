@@ -58,8 +58,11 @@ temp_list_file = []
 
 def translate(text_input):
     translator = GoogleTranslator(source='french', target='russian')
-    translation = translator.translate(text_input)
-
+    try:
+        translation = translator.translate(text_input)
+    except Exception as e:
+        print(f'Error while translate: {e}')
+        translation = text_input
     return translation
 
 
