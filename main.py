@@ -6,11 +6,14 @@ import pika
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, base_1, base_3, base_5, base_9, base_10
+                            scm,
+                            base_1, base_3, base_5, base_9, base_10
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
-                            govkz_new_reestr, consob, sca, amf, sfc, fsa, asc, base_2, base_6, base_11)
+                            govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
+                            # base_2, base_6, base_11
+                            )
 
 logging.basicConfig(
                     filename='ETL.log',
@@ -79,14 +82,14 @@ while True:
     publisher(cbr_unlicensing.data_unit_iterator(), "ЦБ РФ Реестр аннулированных лицензий профессиональных участников рынка ценных бумаг")
     publisher(cbr_warninglist.data_unit_iterator(), "ЦБ РФ Список компаний с выявленными признаками нелегальной деятельности на финансовом рынке")
     publisher(govkz_new_reestr.data_unit_iterator(), "Реестр финансовых пирамид")
-    publisher(base_1.data_unit_iterator(), "FMA Лицензированные и подотчетные лица")
-    publisher(base_2.data_unit_iterator(), "FMA Предупреждения и оповещения")
-    publisher(base_3.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия")
-    publisher(base_5.data_unit_iterator(), "Реестр поставщиков финансовых услуг")
-    publisher(base_6.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады")
-    publisher(base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры")
-    publisher(base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF")
-    publisher(base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов")
+    # publisher(base_1.data_unit_iterator(), "FMA Лицензированные и подотчетные лица")
+    # publisher(base_2.data_unit_iterator(), "FMA Предупреждения и оповещения")
+    # publisher(base_3.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия")
+    # publisher(base_5.data_unit_iterator(), "Реестр поставщиков финансовых услуг")
+    # publisher(base_6.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады")
+    # publisher(base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры")
+    # publisher(base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF")
+    # publisher(base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов")
 
     logging.info(f"Loop of scraping has been finished {datetime.now()}")
     time.sleep(WINDOW_BETWEEN_MESSAGES_SECONDS)
