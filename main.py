@@ -6,7 +6,7 @@ import pika
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm,
+                            scm, bot, cbb, centralbank,
                             base_1, base_3, base_5, base_9, base_10
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
@@ -55,6 +55,9 @@ while True:
     data_units_load_counter = 0
 
     logging.info(f"Loop of scraping has been started {datetime.now()}")
+    publisher(bot.data_unit_iterator(), "BOT")
+    publisher(cbb.data_unit_iterator(), "CBB")
+    publisher(centralbank.data_unit_iterator(), "Centralbank")
     publisher(bafin.data_unit_iterator(), "BAFIN")
     publisher(consob.data_unit_iterator(), "CONSOB")
     publisher(sca.data_unit_iterator(), "Securities and Commodities Authority")
