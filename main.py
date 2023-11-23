@@ -10,8 +10,6 @@ env = dotenv_values(".env")
 
 bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 
-bot.send_message(-948653993, 'TESTTEST')
-
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
