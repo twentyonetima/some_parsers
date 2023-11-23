@@ -189,10 +189,8 @@ def start_parse(full_url):
             url = None
 
 
-start_parse(FULL_URL)
-
-
 def data_unit_iterator():
+    start_parse(FULL_URL)
     """works fine"""
     name_set_to_save = [key for key in NAME_SET]
 

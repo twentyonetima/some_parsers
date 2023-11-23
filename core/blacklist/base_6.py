@@ -9,6 +9,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import json
 from deep_translator import GoogleTranslator
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from slugify import slugify
 from urllib3.exceptions import NewConnectionError, MaxRetryError
 
@@ -95,10 +97,16 @@ def take_main_url(url):
     add_to_url = '?page='
     start_page = 0
 
-    chrome_options = webdriver.ChromeOptions()
-    prefs = {'profile.managed_default_content_settings.images': 2}
-    chrome_options.add_experimental_option('prefs', prefs)
-    driver = webdriver.Chrome(options=chrome_options)
+    service = Service(driver='/chromedriver/')
+    # chrome_options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": "/"}
+    # chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     browser = driver
 
     page = start_page
@@ -148,10 +156,8 @@ def take_main_url(url):
         page += 1
 
 
-take_main_url(URL_START)
-
-
 def data_unit_iterator():
+    take_main_url(URL_START)
     global temp_list_file
 
     result_list = []

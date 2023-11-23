@@ -8,7 +8,7 @@ from models import BaseDataUnit
 
 def data_unit_iterator() -> BaseDataUnit:
     url = 'https://www.consob.it/web/consob-and-its-activities/warnings?viewId=ultime_com_tutela'
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     response.encoding = 'utf-8'
     bs = BeautifulSoup(response.text, "lxml")
 

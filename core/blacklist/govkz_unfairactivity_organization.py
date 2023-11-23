@@ -1,5 +1,7 @@
 import logging
 import json
+import re
+
 import requests
 from models import BaseDataUnit
 from bs4 import BeautifulSoup
@@ -24,18 +26,24 @@ def data_unit_iterator() -> BaseDataUnit:
     for page in pdf_reader.pages:
         strings = page.extract_text().split('\n')
         for string in strings:
-            if not string[0].isnumeric():
+            if not string[0].isnumeric() or string == 'сайта':
                 continue
-            string = string.split(' ')
-            record = [" ".join(string[1:-1]), string[-1]]
-            if 'нет информации о наличии сайта' in record[1]:
-                record[1] = ''
-            try:
-                data_unit = data_transformer(record)
-                yield data_unit.model_dump_json()
-            except Exception as e:
-                logging.error(e)
-                logging.error(f"Error while atempt to transform following row {record}")
+            links = []
+            if 'сайттың болуы туралы ақпарат жоқ / нет информации о наличии' in string:
+                string = string.replace('сайттың болуы туралы ақпарат жоқ / нет информации о наличии', '').strip()
+                name = string
+            else:
+                string = string.split(' ')
+                # record = [" ".join(string[1:-1]), string[-1]]
+                links, record = get_links(string)
+                name = ' '.join(record)
+            print(name, links)
+            # try:
+            #     data_unit = data_transformer(record)
+            #     yield data_unit.model_dump_json()
+            # except Exception as e:
+            #     logging.error(e)
+            #     logging.error(f"Error while atempt to transform following row {record}")
 
 
 def data_transformer(record) -> BaseDataUnit:
@@ -47,3 +55,14 @@ def data_transformer(record) -> BaseDataUnit:
         social_networks=record[1],
     )
     return data_unit
+
+
+def get_links(record: list) -> (list, list):
+    links = []
+
+    for r in record:
+        if re.match('https|http|\/\/', r) or re.match('\w{2,}.\w{2,}', r):
+            record.pop(r)
+            r = r.replace(',', '')
+            links.append(r)
+    return links, record

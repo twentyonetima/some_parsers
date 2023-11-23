@@ -109,10 +109,8 @@ def main_url_proceed(url):
                 parse_as_extended(item)
 
 
-main_url_proceed(URL_START)
-
-
 def data_unit_iterator():
+    main_url_proceed(URL_START)
     global temp_list_file
 
     result_list = []

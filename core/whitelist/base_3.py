@@ -7,6 +7,7 @@ import logging
 from bs4 import BeautifulSoup
 import json
 
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from slugify import slugify
@@ -26,11 +27,24 @@ temp_list_file = []
 
 
 def from_main_url(url):
-    service = Service(driver='/chromedriver/')
-    chrome_options = webdriver.ChromeOptions()
+    # service = Service(driver='/snap/bin/chromium.chromedriver')
+    # chrome_options = webdriver.ChromeOptions()
     prefs = {"download.default_directory": "/"}
-    chrome_options.add_experimental_option("prefs", prefs)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    # chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-setuid-sandbox")
+
+    chrome_options.add_argument("--remote-debugging-port=9222")  # this
+
+    chrome_options.add_argument("--disable-dev-shm-using")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("start-maximized")
+    chrome_options.add_argument("disable-infobars")
+    driver = webdriver.Chrome(options=chrome_options)
     browser = driver
     browser.get(url)
 
@@ -78,10 +92,8 @@ def save_to_file(param, text, text1, text2):
     temp_list_file.append(f'{text};{text1};{text2}')
 
 
-from_main_url(start_url)
-
-
 def data_unit_iterator():
+    from_main_url(start_url)
     global temp_list_file
 
     for line in temp_list_file:

@@ -4,6 +4,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
+from core.utils.translate import translate
 from models import BaseDataUnit
 
 
@@ -178,7 +179,7 @@ def data_unit_iterator() -> BaseDataUnit:
             try:
                 data_unit = BaseDataUnit(
                     type='white_list',
-                    name=data.get('name'),
+                    name=translate(data.get('name')),
                     legal_entity_address=data.get('legal_entity_adress'),
                     source='https://portal.mvp.bafin.de/database/InstInfo/sucheForm.do?&sucheButtonInstitut=Suche'
                 )

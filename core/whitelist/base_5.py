@@ -6,6 +6,8 @@ import json
 import logging
 
 from bs4 import BeautifulSoup
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from slugify import slugify
@@ -38,10 +40,16 @@ def parse_list(text_to_parce):
 
 
 def from_main_url(url):
-    chrome_options = webdriver.ChromeOptions()
-    prefs = {'profile.managed_default_content_settings.images': 2}
-    chrome_options.add_experimental_option('prefs', prefs)
-    driver = webdriver.Chrome(options=chrome_options)
+    service = Service(driver='/chromedriver/')
+    # chrome_options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": "/"}
+    # chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     browser = driver
     browser.get(url)
 
@@ -67,10 +75,8 @@ def from_main_url(url):
             new_ref = previous_ref
 
 
-from_main_url(start_url)
-
-
 def data_unit_iterator():
+    from_main_url(start_url)
     global temp_list_file
 
     # dict_to_save = {

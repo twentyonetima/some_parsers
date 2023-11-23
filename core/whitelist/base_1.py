@@ -115,10 +115,9 @@ def parse_part_one():
             break
 
 
-parse_part_one()  # Запуск паринга
-
-
 def data_unit_iterator():
+    parse_part_one()  # Запуск паринга
+
     global temp_list_file
 
     to_del_duplicates = {}
