@@ -10,6 +10,8 @@ env = dotenv_values(".env")
 
 bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 
+bot.send_message(-948653993, 'TESTTEST')
+
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
@@ -45,8 +47,9 @@ class Parsers:
                 parsers_load_counter += 1
 
             self.write_log_and_send_to_telegram(
-                f"ETL process with source <{source_name}> has been finished. Amount of "
-                f"dataunits for parsing session (this parser and before them): {self.data_units_load_counter}")
+                f"ETL process with source <{source_name}> has been finished. The amount of data in "
+                f"this parser is {parsers_load_counter}. Amount of dataunits for parsing session "
+                f"(this parser and before them): {self.data_units_load_counter}")
 
             parsers_load_counter = None
             time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
@@ -72,6 +75,7 @@ class Parsers:
             bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
         if type_of_log == 'error':
             logging.error(text)
+            bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
 
     @staticmethod
     def list_of_parsers() -> list[callable, str]:
@@ -125,6 +129,6 @@ class Parsers:
             [parse7.data_unit_iterator(), "Parse7"],  # 36
             [parse9.data_unit_iterator(), "Parse9"],  # 37
             [bot.data_unit_iterator(), "BOT"],  # 38
-            [cbb.data_unit_iterator(), "CBB"],  # 40
-            [centralbank.data_unit_iterator(), "Centralbank"],  # 41
+            [cbb.data_unit_iterator(), "CBB"],  # 39
+            [centralbank.data_unit_iterator(), "Centralbank"],  # 40
         ]
