@@ -45,8 +45,9 @@ class Parsers:
                 parsers_load_counter += 1
 
             self.write_log_and_send_to_telegram(
-                f"ETL process with source <{source_name}> has been finished. Amount of "
-                f"dataunits for parsing session (this parser and before them): {self.data_units_load_counter}")
+                f"ETL process with source <{source_name}> has been finished. The amount of data in "
+                f"this parser is {parsers_load_counter}. Amount of dataunits for parsing session "
+                f"(this parser and before them): {self.data_units_load_counter}")
 
             parsers_load_counter = None
             time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
@@ -125,6 +126,6 @@ class Parsers:
             [parse7.data_unit_iterator(), "Parse7"],  # 36
             [parse9.data_unit_iterator(), "Parse9"],  # 37
             [bot.data_unit_iterator(), "BOT"],  # 38
-            [cbb.data_unit_iterator(), "CBB"],  # 40
-            [centralbank.data_unit_iterator(), "Centralbank"],  # 41
+            [cbb.data_unit_iterator(), "CBB"],  # 39
+            [centralbank.data_unit_iterator(), "Centralbank"],  # 40
         ]
