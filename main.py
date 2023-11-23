@@ -10,6 +10,8 @@ env = dotenv_values(".env")
 
 bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 
+bot.send_message(-948653993, 'TESTTEST')
+
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
@@ -73,6 +75,7 @@ class Parsers:
             bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
         if type_of_log == 'error':
             logging.error(text)
+            bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
 
     @staticmethod
     def list_of_parsers() -> list[callable, str]:
