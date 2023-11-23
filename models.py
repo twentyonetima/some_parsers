@@ -14,6 +14,8 @@ class BaseDataUnit(BaseModel):
     year: str = Field(default="")
     remarks: str = Field(default="")
     source: str = Field(default="")
+    link: str = Field(default="")
+    fax: str = Field(default="")
     country: str = Field(default="")
     date_publish: str = Field(default="")
     organizational_and_legal_form: str = Field(default="")
