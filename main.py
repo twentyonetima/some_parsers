@@ -13,7 +13,8 @@ bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, base_1, base_3, base_5, base_9, base_10
+                            scm, base_1, base_3, base_5, base_9, base_10,
+                            bot, cbb, centralbank,
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
@@ -123,4 +124,7 @@ class Parsers:
             [parse3.data_unit_iterator(), "Parse3"],  # 35
             [parse7.data_unit_iterator(), "Parse7"],  # 36
             [parse9.data_unit_iterator(), "Parse9"],  # 37
+            [bot.data_unit_iterator(), "BOT"],  # 38
+            [cbb.data_unit_iterator(), "CBB"],  # 40
+            [centralbank.data_unit_iterator(), "Centralbank"],  # 41
         ]
