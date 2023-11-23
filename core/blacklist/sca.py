@@ -27,7 +27,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 type='black_list',
                 source='https://www.sca.gov.ae/en/open-data/violations-and-warnings.aspx',
                 name=i[0],
-                remarks=translate(i[2]),
+                remarks=translate(i[2]) if len(i) > 2 else '',
             )
             yield data_unit.model_dump_json()
         except Exception as e:

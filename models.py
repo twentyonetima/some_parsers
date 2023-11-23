@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import BaseModel, Field
 
 
@@ -21,13 +23,14 @@ class BaseDataUnit(BaseModel):
     organizational_and_legal_form: str = Field(default="")
     legal_entity_address: str = Field(default="")
     addresses_of_exchange_offices: str = Field(default="")
-    phones: str = Field(default="")
+    phones: Union[str, list] = Field(default="")
     cbr_license_id: str = Field(default="")
     cbr_license_issue_date: str = Field(default="")
     cbr_license_period: str = Field(default="")
     cbr_license_status: str = Field(default="")
     social_networks: str = Field(default="")
-    email: str = Field(default="")
+    links: list = Field(default=[])
+    email: Union[str, list] = Field(default="")
     cbr_counselor_license_issue_date: str = Field(default="")
     govkz_license: str = Field(default="")
     govkz_license_decision_date: str = Field(default="")

@@ -9,6 +9,7 @@ import logging
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from slugify import slugify
@@ -39,9 +40,14 @@ def take_url(url):
     global ref
 
     service = Service(driver='/chromedriver/')
-    chrome_options = webdriver.ChromeOptions()
+    # chrome_options = webdriver.ChromeOptions()
     prefs = {"download.default_directory": "/"}
-    chrome_options.add_experimental_option("prefs", prefs)
+    # chrome_options.add_experimental_option("prefs", prefs)
+
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
     driver_1 = webdriver.Chrome(service=service, options=chrome_options)
 
     browser = driver_1
@@ -75,10 +81,8 @@ def take_url(url):
             current_page += 1
 
 
-take_url(URL_START)
-
-
 def data_unit_iterator():
+    take_url(URL_START)
     global temp_list_file
 
     result_list = []
