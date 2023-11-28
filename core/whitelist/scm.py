@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 from googletrans import Translator
 
+from core.utils.consts import LIST_OF_SOCIAL_SITE_DOMAINS
 from models import BaseDataUnit
 
 
@@ -42,6 +43,17 @@ def data_unit_iterator() -> BaseDataUnit:
     translator = Translator()
 
     for i in _list:
+        social_networks = []
+        links = []
+        if i[2].lower() == 'n/a':
+            links = []
+        else:
+            for _l in [x.strip() for x in i[2].strip().split('|') if x != ''] if i[2] != '' else '':
+                if any(domain in _l for domain in LIST_OF_SOCIAL_SITE_DOMAINS):  # Проверка на соц. сеть
+                    social_networks.append(_l)
+                else:
+                    links.append(_l)
+
         try:
             text = translator.translate(i[4], dest='ru').text
         except Exception as e:
@@ -50,12 +62,14 @@ def data_unit_iterator() -> BaseDataUnit:
 
         try:
             data_unit = BaseDataUnit(
-                type='white_list',
+                type='black_list',
                 name=i[0],
-                social_networks=i[2],
+                links=links,
+                social_networks=social_networks,
                 year=i[3],
                 remarks=text,
-                source='https://www.sc.com.my/regulation/enforcement/investor-alerts/sc-investor-alerts/investor-alert-list'
+                source='https://www.sc.com.my/regulation/enforcement/investor-alerts/sc-investor-alerts/investor-alert-list',
+                country='Малайзия'
             )
             yield data_unit.model_dump_json()
         except Exception as e:

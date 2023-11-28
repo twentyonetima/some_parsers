@@ -42,15 +42,8 @@ def data_unit_iterator() -> BaseDataUnit:
                 links=links,
                 social_networks=social_networks,
                 remarks=translate(i[2]) if len(i) > 2 else '',
+                country='ОАЭ'
             )
-            print({
-                'type': 'black_list',
-                'source': 'https://www.sca.gov.ae/en/open-data/violations-and-warnings.aspx',
-                'name': name,
-                'links': links,
-                'social_networks': social_networks,
-                'remarks': translate(i[2]) if len(i) > 2 else '',
-            })
             yield data_unit.model_dump_json()
         except Exception as e:
             logging.error(e)

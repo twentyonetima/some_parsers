@@ -78,15 +78,15 @@ class Parsers:
     @staticmethod
     def list_of_parsers() -> list[callable, str]:
         return [
-            [bafin.data_unit_iterator(), "BAFIN"],  # 0
-            [consob.data_unit_iterator(), "CONSOB"],  # 1
-            [sca.data_unit_iterator(), "Securities and Commodities Authority"],  # 2
-            [amf.data_unit_iterator(), "AMF"],  # 3
-            [sfc.data_unit_iterator(), "Securities and Futures Commission"],  # 4
-            [fsa.data_unit_iterator(), "Financial Services Agency"],  # 5
-            [asc.data_unit_iterator(), "Alberta Securities Commission"],  # 6
-            [scm.data_unit_iterator(), "Securities Commission Malaysia"],  # 7
-            [national_bank_kz.data_unit_iterator(), "Национальный банк РК"],  # 8
+            [bafin.data_unit_iterator(), "Белый список.Корпоративная база данных BaFin "],  # 0
+            [consob.data_unit_iterator(), "Черный список. Список предупреждений Италии"],  # 1
+            [sca.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов ОАЭ"],  # 2
+            [amf.data_unit_iterator(), "Черные списки неавторизованных компаний и сайтов Франции"],  # 3
+            [sfc.data_unit_iterator(), "Черный список. Cписок организаций, неодобренных SFC"],  # 4
+            [fsa.data_unit_iterator(), "Черный список. Список лиц, занимающихся торговлей финансовыми инструментами без регистрации в Японии"],  # 5
+            [asc.data_unit_iterator(), "Черный список. Инвестиционный список предостережения Канады"],  # 6
+            [scm.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Малайзии"],  # 7
+            [national_bank_kz.data_unit_iterator(), "Белый список.Национальный банк РК"],  # 8
             [cbr_forex.data_unit_iterator(), "ЦБ РФ Список форекс-дилеров"],  # 9
             [cbr_reestersavers.data_unit_iterator(), "ЦБ РФ Список регистраторов"],  # 10
             [cbr_trust.data_unit_iterator(), "ЦБ РФ Список доверительных управляющих"],  # 11
