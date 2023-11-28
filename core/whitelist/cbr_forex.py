@@ -10,6 +10,8 @@ def data_unit_iterator() -> BaseDataUnit:
                                                           'Cookie': '__ddg1_=kmvDUojcEhQkFdl0ZhFW; ASPNET_SessionID=jqucbhynnzitdvejyrfzo1s2; __ddgid_=EevzvW31BB1HM0uJ; __ddgmark_=iQsD3RkyYtCcvZEz; __ddg2_=cskxdNPtKAp2xFZM; accept=1',
                                                           'Referer': 'https://www.cbr.ru/registries/'})
     for index, row in df.iterrows():
+        if type(row.iloc[3]) is float or not (row.iloc[0]).isdigit():
+            continue
         try:
             data_unit = BaseDataUnit(
                 type='white_list',
@@ -20,6 +22,8 @@ def data_unit_iterator() -> BaseDataUnit:
                 cbr_license_issue_date=row.iloc[7],
                 cbr_license_period=row.iloc[8],
                 cbr_license_status=row.iloc[9],
+                source='https://cbr.ru',
+                country='Россия'
             )
             yield data_unit.model_dump_json()
         except Exception as e:
