@@ -59,6 +59,8 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_banking_is_parameter63=boolean_transformer(record['otkrytie_kor_schetov']),
         govkz_banking_is_parameter64=boolean_transformer(record['otkrytie_schetov_yuridicheskih_lic']),
         govkz_banking_is_parameter65=boolean_transformer(record['faktoringovye_operacii']),
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 

@@ -43,6 +43,8 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_license_revocation_decision_id=record['nomer_resheniya'],
         govkz_license_revocation_decision_date=record['data_resheniya'],
         govkz_license_revocation_details=record['perechen_operaciy'],
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 

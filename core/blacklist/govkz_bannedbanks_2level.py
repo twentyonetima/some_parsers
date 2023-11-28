@@ -36,14 +36,16 @@ def data_transformer(record) -> BaseDataUnit:
     data_unit = BaseDataUnit(
         type='black_list',
         name=record['title'],
-        legal_entity_address=record['location'],
+        legal_entity_address=record['location'] if 'location' in record and isinstance(record['location'], str) else '',
         govkz_current_license_id=record['nomer_licenzii'],
         govkz_current_license_date=record['data_vydachi_licenzii'],
-        govkz_type_of_activity=record['vid_deyatelnosti'],
-        govkz_is_foreign_or_national_currency=record['valyuta'],
-        govkz_license_revocation_decision_id=record['nomer_resheniya'] if isinstance(record['nomer_resheniya'], str) else "",
+        govkz_type_of_activity=record['vid_deyatelnosti'] if 'vid_deyatelnosti' in record else '',
+        govkz_is_foreign_or_national_currency=record['valyuta'] if 'valyuta' in record and isinstance(record['valyuta'], str) else '',
+        govkz_license_revocation_decision_id=record['nomer_resheniya'] if isinstance(record['nomer_resheniya'], str) else '',
         govkz_license_revocation_decision_date=record['data_resheniya'],
         govkz_license_revocation_details=record['perechen_operaciy'],
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 

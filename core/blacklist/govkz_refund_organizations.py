@@ -43,6 +43,8 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_is_foreign_or_national_currency=" ,".join([i['title'] for i in record['transaction_currency']]),
         govkz_license_revocation_decision_id=record['nomer_resheniya'] if isinstance(record['nomer_resheniya'], str) else "",
         govkz_license_revocation_decision_date=record['data_resheniya'],
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 
