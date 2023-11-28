@@ -108,6 +108,8 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_banking_is_parameter58=boolean_transformer(record['ddrcbbpvskvknd']),
         govkz_banking_is_parameter59=boolean_transformer(record['banking_operations']),
         govkz_banking_is_parameter60=boolean_transformer(record['other_operations']),
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 
@@ -116,4 +118,3 @@ def boolean_transformer(value) -> str:  # result always as 'True' or 'False'. Wh
     if value is True:
         return 'True'
     return 'False'
-

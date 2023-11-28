@@ -44,6 +44,8 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_license_revocation_decision_date=record['data_resheniya'],
         govkz_activity_suspension_details=record['vid_operacii'],
         govkz_activity_suspension_grounds=record['osnovaniya_priostanovleniya_licenzii'],
+        source='https://www.gov.kz/',
+        country='Казахстан'
     )
     return data_unit
 
