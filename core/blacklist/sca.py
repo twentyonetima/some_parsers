@@ -51,10 +51,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 'social_networks': social_networks,
                 'remarks': translate(i[2]) if len(i) > 2 else '',
             })
-            # yield data_unit.model_dump_json()
+            yield data_unit.model_dump_json()
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row")
-
-
-data_unit_iterator()
