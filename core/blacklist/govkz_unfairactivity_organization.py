@@ -38,12 +38,12 @@ def data_unit_iterator() -> BaseDataUnit:
                 links, record = get_links(string)
                 name = ' '.join(record)
             print(name, links)
-            # try:
-            #     data_unit = data_transformer(record)
-            #     yield data_unit.model_dump_json()
-            # except Exception as e:
-            #     logging.error(e)
-            #     logging.error(f"Error while atempt to transform following row {record}")
+            try:
+                data_unit = data_transformer(record)
+                yield data_unit.model_dump_json()
+            except Exception as e:
+                logging.error(e)
+                logging.error(f"Error while atempt to transform following row {record}")
 
 
 def data_transformer(record) -> BaseDataUnit:
