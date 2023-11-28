@@ -8,7 +8,7 @@ import telebot
 
 env = dotenv_values(".env")
 
-bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
+tg_bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
@@ -61,7 +61,7 @@ class Parsers:
     def start_parsing(self) -> None:
         self.write_log_and_send_to_telegram(f"Loop of scraping has been started {datetime.now()}")
 
-        for index, parser in enumerate(self.list_of_parsers()):
+        for parser in self.list_of_parsers():
             self.publisher(parser[0], parser[1])
 
         self.write_log_and_send_to_telegram(f"Loop of scraping has been finished {datetime.now()}")
@@ -70,10 +70,10 @@ class Parsers:
     def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
         if type_of_log == 'info':
             logging.info(text)
-            bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
+            tg_bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
         if type_of_log == 'error':
             logging.error(text)
-            bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
+            tg_bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
 
     @staticmethod
     def list_of_parsers() -> list[callable, str]:

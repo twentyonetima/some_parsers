@@ -12,9 +12,6 @@ site_link = 'https://www.amf-france.org'
 source = 'https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde'
 
 
-# Pokazat kak ya sdelal
-
-
 def read_categories():
     pdfs_list = []
     translator = Translator()
@@ -85,26 +82,56 @@ def data_unit_iterator() -> BaseDataUnit:
                 date_text.append(i.text)
 
         for i in range(len(h2_text)):
-            name = h2_text[i].strip()
+
+            _url = h2_text[i].strip()
+            name = _url
             cbr_signs_of_illegal_activity = ''
-            for category_object in list_of_categories_from_pdf:
-                if name in category_object['all_sites']:
-                    cbr_signs_of_illegal_activity = category_object['category_title']
-                    break
+            for _index, category_object in enumerate(list_of_categories_from_pdf):
+                for site_name in category_object['all_sites']:
+                    if _url in site_name:
+
+                        cbr_signs_of_illegal_activity = category_object['category_title']
+                        list_of_categories_from_pdf[_index]['all_sites'].remove(site_name)
+                        if ' / ' in site_name:
+                            name = site_name.split(' / ')[1]
+                            _url = site_name.split(' / ')[0]
+                        break
             try:
                 data_unit = BaseDataUnit(
                     type='black_list',
                     source=source,
                     country='Франция',
                     name=name,
-                    email=name if '@' in name else '',
-                    links=[name] if '@' not in name else [],
+                    email=_url if '@' in _url else '',
+                    links=[_url] if '@' not in _url else [],
                     remarks=td_text[i],
                     date_publish=date_text[i],
                     cbr_signs_of_illegal_activity=cbr_signs_of_illegal_activity
                 )
-                print(data_unit)
-                # yield data_unit.model_dump_json()
+                yield data_unit.model_dump_json()
+            except Exception as e:
+                logging.error(e)
+                logging.error(f"Error while atempt to transform following row")
+
+    for category_object in list_of_categories_from_pdf:
+        cbr_signs_of_illegal_activity = category_object['category_title']
+        for site_name in category_object['all_sites']:
+            name = ''
+            url = site_name
+            if ' / ' in site_name:
+                name = site_name.split(' / ')[1]
+                url = site_name.split(' / ')[0]
+            try:
+                data_unit = BaseDataUnit(
+                    type='black_list',
+                    source=source,
+                    country='Франция',
+                    name=name,
+                    email=url if '@' in url else '',
+                    links=[url] if '@' not in url else [],
+                    cbr_signs_of_illegal_activity=cbr_signs_of_illegal_activity
+                )
+                yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
