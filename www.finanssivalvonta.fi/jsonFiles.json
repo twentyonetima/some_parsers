@@ -1,0 +1,68 @@
+[
+    {
+        "data_publish": "11 August 2023",
+        "name": "Lucreberg.com",
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве.",
+        "type": "black_list"
+    },
+    {
+        "data_publish": "4 May 2023",
+        "name": "Stockxmine",
+        "social_networks": "https://www.stockxmine.com/",
+        "type": "black_list"
+    },
+    {
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве.",
+        "data_publish": "7 February 2023",
+        "name": "Binetrix",
+        "type": "black_list"
+    },
+    {
+        "social_networks": "https://binetrix.com/",
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве.",
+        "data_publish": "30 November 2022",
+        "type": "black_list"
+    },
+    {
+        "social_networks": "https://bothnia-international.eu/en/index.html",
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве и злоупотреблении информацией страховой компании Bothnia International.",
+        "data_publish": "31 October 2022",
+        "type": "black_list"
+    },
+    {
+        "social_networks": "https://grinderpartnersoy.com",
+        "remarks": "У FIN-FSA есть основания подозревать, что компания занимается мошенничеством и неправильно использует информацию финской компании.",
+        "data_publish": "13 July 2023",
+        "type": "black_list"
+    },
+    {
+        "name": "Nuibilo",
+        "social_networks": "(Nuibilo.com)",
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве.",
+        "type": "black_list"
+    },
+    {
+        "data_publish": "22 March 2023",
+        "social_networks": "www.equityglobalsinc.com",
+        "remarks": "У FIN-FSA есть основания подозревать компанию в мошенничестве.",
+        "type": "black_list"
+    },
+    {
+        "data_publish": "2 February 2023",
+        "name": "Phoenixfoundationoy.com",
+        "remarks": "У FIN-FSA есть основания подозревать, что компания занимается мошенничеством и неправильно использует информацию финской компании.",
+        "type": "black_list"
+    },
+    {
+        "data_publish": "18 November 2022",
+        "name": "https://www.summa-capitaloy.com/",
+        "social_networks": "https://www.summa-capitaloy.com/",
+        "type": "black_list"
+    },
+    {
+        "remarks": "У FIN-FSA есть основания подозревать, что компания занимается мошенничеством и неправильно использует информацию финской компании.",
+        "data_publish": "22 September 2022",
+        "name": "Interestverse",
+        "type": "black_list"
+    }
+]

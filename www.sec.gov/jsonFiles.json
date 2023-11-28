@@ -1,0 +1,121 @@
+[
+    {
+        "name": "12 West Capital Management",
+        "legal_entity_address": "90 Park Avenue, 41 -й этаж Нью -Йорк, Нью -Йорк 10016",
+        "phones": "",
+        "links": [
+            "http//www.12-wcm.com"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "1st American Securities",
+        "legal_entity_address": "632 Бродвей, Suite 3002 Нью -Йорк, Нью -Йорк 10012",
+        "phones": "(646) 313-3785",
+        "fax": " (646) 224-8912",
+        "links": [
+            "http//www.firstamericansecurities.com"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "1st New York Financial Corporation",
+        "legal_entity_address": "117 West 79th Street New York, NY 10024",
+        "phones": "347-473-7697",
+        "fax": " 646-383-6828",
+        "links": [
+            "http//www.1stnewyorkfinancial.com    "
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "205fx.com",
+        "legal_entity_address": "40 Уолл -стрит, #28 Нью -Йорк, Нью -Йорк 10005",
+        "phones": "",
+        "fax": "",
+        "email": " support@205fx.com",
+        "links": [
+            "  205fx.com"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "247Bitxconnect",
+        "legal_entity_address": "Джексонвилл, Флорида 42747",
+        "phones": "1-330-736-1198",
+        "fax": "",
+        "email": " info@247bitxconnect.com",
+        "links": [
+            "https//247bitxconnect.com/en/#"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "247Crypto Trade",
+        "legal_entity_address": "8605 Санта -Моника Бульвар Лос -Анджелес, Калифорния 90069",
+        "phones": "1-213-342-1769",
+        "fax": "",
+        "email": " support@247cryptotrade ",
+        "links": [
+            " www.247cryptotrade.co "
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "247 Options Trade",
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "24Brickstonefx.com",
+        "legal_entity_address": "92 Laight Street #A Tribeca",
+        "phones": "1-440-545-7767",
+        "fax": "",
+        "email": " support@24Brickstonefx.com ",
+        "links": [
+            "https//www.24brickstonefx.com "
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "24cryptoindex",
+        "legal_entity_address": "Лос Анджелес, Калифорния",
+        "phones": "1-260-277-0413",
+        "fax": "",
+        "email": " SUPPORT@APP.24CRYPTOINDEX.COM",
+        "links": [
+            "https//24cryptoindex.com/index-2.html"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    },
+    {
+        "name": "24 Provident Trade",
+        "legal_entity_address": "67 Уолл -стрит Нью -Йорк, Нью -Йорк 10005",
+        "phones": "1-626-412-0524",
+        "fax": "",
+        "email": " support@24providenttrade.com",
+        "links": [
+            " www.24providenttrade.com"
+        ],
+        "type": "black_list",
+        "source": "https://www.sec.gov/enforce/public-alerts/impersonators-genuine-firms/12-west-capital-management",
+        "Country": "United States"
+    }
+]
