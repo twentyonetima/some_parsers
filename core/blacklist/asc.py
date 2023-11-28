@@ -34,6 +34,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 type='black_list',
                 name=name,
                 source='https://www.asc.ca/en/Enforcement/Investment-Caution-List',
+                country='Альберта(Канада)'
             )
             yield data_unit.model_dump_json()
         except Exception as e:

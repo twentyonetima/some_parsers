@@ -28,6 +28,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 source='https://www.fsa.go.jp/ordinary/chuui/mutouroku/04.html',
                 name=sublist[0],
                 remarks=remarks,
+                country='Япония'
             )
             yield data_unit.model_dump_json()
         except Exception as e:

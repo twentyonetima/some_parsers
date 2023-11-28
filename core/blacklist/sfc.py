@@ -34,8 +34,9 @@ def data_unit_iterator() -> BaseDataUnit:
             data_unit = BaseDataUnit(
                 type='black_list',
                 source='https://www.sfc.hk/en/alert-list',
-                name=sublist[0],
+                name=sublist[0].strip(),
                 remarks=remarks,
+                country='Гонконг'
             )
             yield data_unit.model_dump_json()
         except Exception as e:

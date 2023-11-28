@@ -31,6 +31,8 @@ def data_unit_iterator() -> BaseDataUnit:
                 organizational_and_legal_form=row.iloc[5],
                 legal_entity_address=row.iloc[6],
                 addresses_of_exchange_offices=row.iloc[7],
+                country='Казахстан',
+                source=SOURCE_URL
             )
             yield data_unit.model_dump_json()
         except Exception as e:
