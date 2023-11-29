@@ -26,7 +26,11 @@ def data_unit_iterator() -> BaseDataUnit:
                 source='https://cbr.ru',
                 country='Россия'
             )
-            yield data_unit.model_dump_json()
+            print(data_unit)
+            # yield data_unit.model_dump_json()
         except Exception as e:
             logging.error(e)
             logging.error(f"Error while atempt to transform following row {row}")
+
+
+data_unit_iterator()

@@ -96,7 +96,7 @@ def data_unit_iterator():
         try:
             data_unit = BaseDataUnit(
                 name=firm_as_dict['name'],
-                social_networks=firm_as_dict['social_networks'],
+                social_networks=[firm_as_dict['social_networks']],
                 type=firm_as_dict['type'],
                 source=URL_START,
                 country='Украина',

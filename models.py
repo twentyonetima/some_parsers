@@ -28,7 +28,7 @@ class BaseDataUnit(BaseModel):
     cbr_license_issue_date: str = Field(default="")
     cbr_license_period: str = Field(default="")
     cbr_license_status: str = Field(default="")
-    social_networks: Union[str, list] = Field(default="")
+    social_networks: list = Field(default=[])
     links: list = Field(default=[])
     email: Union[str, list] = Field(default="")
     cbr_counselor_license_issue_date: str = Field(default="")

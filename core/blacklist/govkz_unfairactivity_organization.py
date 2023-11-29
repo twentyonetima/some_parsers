@@ -3,6 +3,8 @@ import json
 import re
 
 import requests
+
+from core.utils.consts import REGEX_URL
 from models import BaseDataUnit
 from bs4 import BeautifulSoup
 import PyPDF2
@@ -25,44 +27,52 @@ def data_unit_iterator() -> BaseDataUnit:
     pdf_reader = PyPDF2.PdfReader(pdf_content)
     for page in pdf_reader.pages:
         strings = page.extract_text().split('\n')
+        for ind, string in enumerate(strings):
+            if 'Компаниялар атауы' in string:
+                strings.remove(string)
+                continue
+            if not string[0].isnumeric():
+                strings[ind - 1] += string
+                strings.remove(string)
         for string in strings:
             if not string[0].isnumeric() or string == 'сайта':
                 continue
             links = []
+            name = ''
             if 'сайттың болуы туралы ақпарат жоқ / нет информации о наличии' in string:
-                string = string.replace('сайттың болуы туралы ақпарат жоқ / нет информации о наличии', '').strip()
-                name = string
+                string = (string.replace('сайттың болуы туралы ақпарат жоқ / нет информации о наличии', '')
+                          .replace(' сайта', '').strip())
+                name = ' '.join(string.split(' ')[1:])
             else:
-                string = string.split(' ')
-                # record = [" ".join(string[1:-1]), string[-1]]
-                links, record = get_links(string)
-                name = ' '.join(record)
-            print(name, links)
+                string = string.replace('»', ' ').replace('«', '').split(' ')
+
+                links, name = get_links(string[1:])
             try:
-                data_unit = data_transformer(record)
+                data_unit = data_transformer(name, links)
                 yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
-                logging.error(f"Error while atempt to transform following row {record}")
+                logging.error(f"Error while atempt to transform following row {string}")
 
 
-def data_transformer(record) -> BaseDataUnit:
+def data_transformer(name, links) -> BaseDataUnit:
     data_unit = BaseDataUnit(
         type='black_list',
         country='Казахстан',
         source=link_to_source,
-        name=record[0],
-        social_networks=record[1],
+        name=name,
+        links=links,
     )
     return data_unit
 
 
 def get_links(record: list) -> (list, list):
     links = []
-
+    name = ''
     for r in record:
-        if re.match('https|http|\/\/', r) or re.match('\w{2,}.\w{2,}', r):
-            record.pop(r)
-            r = r.replace(',', '')
-            links.append(r)
-    return links, record
+        if re.search(REGEX_URL, r) or re.match('https|http|\/\/', r):
+            if record.index(r) != 0:
+                links.append(r)
+                continue
+        name += ' ' + r
+    return links, name.replace(',', '').strip()

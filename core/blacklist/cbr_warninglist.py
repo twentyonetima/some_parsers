@@ -25,8 +25,10 @@ def data_unit_iterator() -> BaseDataUnit:
                 cbr_license_revocation_date=row['DT'],
                 name=row['Name'],
                 legal_entity_address=row['ADDR'],
-                social_networks=row['Site'],
+                links=[row['Site']],
                 cbr_license_revokation_reason=row['Sign'],
+                source='https://www.gov.kz/',
+                country='Россия'
             )
             yield data_unit.model_dump_json()
     except Exception as e:

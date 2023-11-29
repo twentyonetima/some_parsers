@@ -173,7 +173,7 @@ def data_unit_iterator():
                 name=firm_as_dict['name'],
                 govkz_type_of_activity=firm_as_dict['govkz_type_of_activity'],
                 legal_entity_address=firm_as_dict['legal_entity_address'],
-                social_networks=firm_as_dict['social_networks'],
+                social_networks=[firm_as_dict['social_networks']],
                 date_publish=firm_as_dict['date_publish'],
                 type=firm_as_dict['type'],
                 source=URL_START,

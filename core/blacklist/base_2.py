@@ -209,11 +209,23 @@ def data_unit_iterator():
                 date_publish=firm_as_dict['date_publish'],
                 type=firm_as_dict['type'],
                 addresses_of_exchange_offices=firm_as_dict['addresses_of_exchange_offices'],
-                social_networks=firm_as_dict['link'],
+                social_networks=[firm_as_dict['link']],
                 email=firm_as_dict['email'],
                 source=FULL_URL,
                 country='Новая Зеландия',
             )
+            # print(
+            #     {
+            #     'name': firm_as_dict['name'],
+            #     'date_publish': firm_as_dict['date_publish'],
+            #     'type': firm_as_dict['type'],
+            #     'addresses_of_exchange_offices': firm_as_dict['addresses_of_exchange_offices'],
+            #     'social_networks': [firm_as_dict['link']],
+            #     'email': firm_as_dict['email'],
+            #     'source': FULL_URL,
+            #     'country': 'Новая Зеландия',
+            #     }
+            # )
             yield data_unit.model_dump_json()
         except Exception as e:
             logging.error(e)
