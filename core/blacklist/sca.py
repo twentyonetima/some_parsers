@@ -40,7 +40,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 source='https://www.sca.gov.ae/en/open-data/violations-and-warnings.aspx',
                 name=name,
                 links=links,
-                social_networks=social_networks,
+                social_networks=[social_networks],
                 remarks=translate(i[2]) if len(i) > 2 else '',
                 country='ОАЭ'
             )

@@ -66,7 +66,7 @@ def data_unit_iterator():
                     type="black_list",
                     name=data['name'],
                     links=data['site'] if 'site' in data else [],
-                    social_networks=data['media'] if 'media' in data else '',
+                    social_networks=[data['media']] if 'media' in data else [],
                     remarks=data['remarks'],
                     date_publish=site[2],
                     country='Великобритания',

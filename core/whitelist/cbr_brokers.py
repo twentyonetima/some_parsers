@@ -18,11 +18,10 @@ def data_unit_iterator() -> BaseDataUnit:
                 type='white_list',
                 name=row.iloc[1],
                 inn=row.iloc[2],
-                legal_entity_address=row.iloc[5],
-                social_networks=row.iloc[6],
-                phones=row.iloc[7],
-                email=row.iloc[8],
-                cbr_counselor_license_issue_date=row.iloc[9],
+                legal_entity_address=row.iloc[4],
+                social_networks=[row.iloc[6]],
+                phones=row.iloc[5],
+                cbr_counselor_license_issue_date=row.iloc[7],
                 source='https://cbr.ru',
                 country='Россия'
             )
