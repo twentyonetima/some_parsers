@@ -28,7 +28,7 @@ def test(url, driver, type_list):
     all_dictonary = []
     page_number = 1
     time.sleep(3)
-    while page_number < 1:
+    while page_number < 2:
 
         value = []
         key = []
@@ -53,12 +53,12 @@ def test(url, driver, type_list):
             url2 = re.findall(pattern, items)
 
             if url2:
-                key.append("social_networks")
-                value.append(url2[0])
+                key.append("links")
+                value.append([url2[0], ])
             else:
                 key.append('name')
                 value.append(name[i].text)
-
+            print()
             button_check = list_data[i].find_elements(By.CSS_SELECTOR, "button")
             if len(button_check) != 0:
                 if buttn_number <= len(button):
@@ -67,29 +67,87 @@ def test(url, driver, type_list):
                     # print(buttn_number)
                     time.sleep(5)
                     buttn_number += 1
-                    show_title = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content h4")
-                    show_p = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content p")
-                    if show_title.text == "Website:":
-                        key.append("social_networks")
-                    elif show_title.text == "Email:":
+                    a2 = list_data[i].text
+                    parent_div = list_data[i].find_element(By.CLASS_NAME, 'masx-toggle-content')
+                    a1 = parent_div.text
+                    content_items = parent_div.find_elements(By.CLASS_NAME, 'masx-toggle-content__item')
+
+                    # Iterate through each content item
+                    for item in content_items:
+                        # Find the <h4> element within the current content item
+                        show_title = item.find_element(By.TAG_NAME, 'h4')
+                        a = show_title.text
+                        # Find the <p> element within the current content item
+                        show_p = item.find_element(By.TAG_NAME, 'p')
+                        b = show_p.text
+                        print(a, b)
+                        if show_title.text == "Phone Number:":
+                            key.append("phone")
+                            value.append(show_p.text)
+                        elif show_title.text == "Website:":
+                            key.append("links")
+                            value.append([show_p.text, ])
+                        elif show_title.text == "Email:":
+                            key.append("email")
+                            value.append(show_p.text)
+                        elif show_title.text == "Address:":
+                            key.append("legal_entity_address")
+                            if "\n" in show_p.text:
+                                address = show_p.text.replace("\n", ' ')
+                                value.append(address)
+                            else:
+                                value.append(show_p.text)
+                        else:
+                            key.append(show_title.text)
+                            value.append(show_p.text)
+                    if "phone" not in key:
+                        key.append("phone")
+                        value.append("")
+                    if "email" not in key:
                         key.append("email")
-                    elif show_title.text == "Address:":
+                        value.append("")
+                    if "legal_entity_address" not in key:
                         key.append("legal_entity_address")
-                    else:
-                        key.append(show_title.text)
-                    value.append(show_p.text)
-                    # print("h4", show_title.text)
-                    # print("p", show_p.text)
+                        value.append("")
+                    # show_title = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content h4")
+                    # show_p = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content p")
+                    # for element in elements:
+                    #     show_title = element.find_elements(By.TAG_NAME,'h4')
+                    #     show_p = element.find_elements(By.TAG_NAME,'p')
+                    #     if show_title.text == "Phone Number:":
+                    #         key.append("phone")
+                    #         value.append(show_p.text)
+                    #     elif show_title.text == "Website:":
+                    #         key.append("links")
+                    #         value.append([show_p.text, ])
+                    #     elif show_title.text == "Email:":
+                    #         key.append("email")
+                    #         value.append(show_p.text)
+                    #     elif show_title.text == "Address:":
+                    #         key.append("legal_entity_address")
+                    #         if "\n" in show_p.text:
+                    #             address = show_p.text.replace("\n", ' ')
+                    #             value.append(address)
+                    #         else:
+                    #             value.append(show_p.text)
+                    #     else:
+                    #         key.append(show_title.text)
+                    #         value.append(show_p.text)
+                    #     print("h4", show_title.text)
+                    #     print("p", show_p.text)
 
             count = 0
-            # print(len(key))
-            # print(len(value))
-            # chek = len(key)
+            print(len(key))
+            print(len(value))
+            chek = len(key)
 
             for s in range(len(key)):
 
                 if count != len(key):
                     count += 1
+                    val_key = key[s]
+                    val_val = value[s]
+                    print(val_key, val_val)
                     json_dictionary[key[s]] = value[s]
 
                     if count == len(key):
@@ -98,7 +156,8 @@ def test(url, driver, type_list):
                         all_dictonary.append(json_dictionary)
                         json_dictionary = {}
                         count = 0
-
+                        key.clear()
+                        value.clear()
         page_number += 1
         print("Page number", page_number)
         print(url + "?page=" + str(page_number))
