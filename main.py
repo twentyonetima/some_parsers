@@ -130,7 +130,7 @@ class Parsers:
             [bot.data_unit_iterator(), "BOT"],  # 38
             [cbb.data_unit_iterator(), "CBB"],  # 39
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
-        ][22:24]
+        ]
 
     @staticmethod
     def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
