@@ -27,12 +27,17 @@ class Parsers:
     WINDOW_BETWEEN_MESSAGES_SECONDS = 60 * 60 * 12
     WINDOW_BETWEEN_SOURCES_SECONDS = 60
     data_units_load_counter = 0
+    parsers_data: list[str, int] = []
+    ONE_PARSER_MSG = '''🌐 {0} - [<strong>{1}</strong>] \n'''
+    SUCCESS_PARSERS_LOG_MSG = '''{0}\n🔚 Amount of dataunits - <b>{1}</b>
+    '''
 
     def publisher(self, func: callable, source_name: str) -> None:
         try:
             parsers_load_counter = 0
 
-            self.write_log_and_send_to_telegram(f"ETL process with source <{source_name}> has been started")
+            # self.write_log_and_send_to_telegram(f"ETL process with source <{source_name}> has been started")
+            logging.info(f"ETL process with source <{source_name}> has been started")
 
             connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
             channel = connection.channel()
@@ -44,7 +49,9 @@ class Parsers:
                 self.data_units_load_counter += 1
                 parsers_load_counter += 1
 
-            self.write_log_and_send_to_telegram(
+            self.parsers_data.append([source_name, parsers_load_counter])
+            # self.write_log_and_send_to_telegram(
+            logging.info(
                 f"ETL process with source <{source_name}> has been finished. The amount of data in "
                 f"this parser is {parsers_load_counter}. Amount of dataunits for parsing session "
                 f"(this parser and before them): {self.data_units_load_counter}")
@@ -52,6 +59,7 @@ class Parsers:
             parsers_load_counter = None
             time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
         except Exception as e:
+            self.parsers_data.append([source_name, -1])
             self.write_log_and_send_to_telegram('f"Current resource was stopped cause of global error: {e}"',
                                                 'error')
         finally:
@@ -64,26 +72,19 @@ class Parsers:
         for parser in self.list_of_parsers():
             self.publisher(parser[0], parser[1])
 
+        self.logging_for_tg(self.parsers_data, self.data_units_load_counter)
         self.write_log_and_send_to_telegram(f"Loop of scraping has been finished {datetime.now()}")
-
-    @staticmethod
-    def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
-        if type_of_log == 'info':
-            logging.info(text)
-            tg_bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
-        if type_of_log == 'error':
-            logging.error(text)
-            tg_bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
 
     @staticmethod
     def list_of_parsers() -> list[callable, str]:
         return [
-            [bafin.data_unit_iterator(), "Белый список.Корпоративная база данных BaFin "],  # 0
+            [bafin.data_unit_iterator(), "Белый список.Корпоративная база данных BaFin"],  # 0
             [consob.data_unit_iterator(), "Черный список. Список предупреждений Италии"],  # 1
             [sca.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов ОАЭ"],  # 2
             [amf.data_unit_iterator(), "Черные списки неавторизованных компаний и сайтов Франции"],  # 3
             [sfc.data_unit_iterator(), "Черный список. Cписок организаций, неодобренных SFC"],  # 4
-            [fsa.data_unit_iterator(), "Черный список. Список лиц, занимающихся торговлей финансовыми инструментами без регистрации в Японии"],  # 5
+            [fsa.data_unit_iterator(),  # 5
+             "Черный список. Список лиц, занимающихся торговлей финансовыми инструментами без регистрации в Японии"],
             [asc.data_unit_iterator(), "Черный список. Инвестиционный список предостережения Канады"],  # 6
             [scm.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Малайзии"],  # 7
             [national_bank_kz.data_unit_iterator(), "Белый список.Национальный банк РК"],  # 8
@@ -93,21 +94,21 @@ class Parsers:
             [cbr_dealers.data_unit_iterator(), "ЦБ РФ Список дилеров"],  # 12
             [cbr_depositaries.data_unit_iterator(), "ЦБ РФ Список депозитариев"],  # 13
             [cbr_brokers.data_unit_iterator(), "ЦБ РФ Список брокеров"],  # 14
-            [cbr_specdepositaries.data_unit_iterator(),
-             "ЦБ РФ Реестр лицензий специализированных депозитариев инвестиционных фондов, паевых инвестиционных фондов и негосударственных пенсионных фондов"],  # 15
+            [cbr_specdepositaries.data_unit_iterator(),  # 15
+             "ЦБ РФ Реестр лицензий специализированных депозитариев инвестиционных фондов, паевых инвестиционных фондов и негосударственных пенсионных фондов"],
             [cbr_advisors.data_unit_iterator(), "ЦБ РФ Единый реестр инвестиционных советников"],  # 16
-            [govkz_securities_transactions.data_unit_iterator(),
-             "GOV KZ Реестр выданных, переоформленных лицензий на проведение банковских и иных операций и осуществление деятельности на рынке ценных бумаг"],  # 17
-            [govkz_individual_banking_transactions.data_unit_iterator(),
-             "GOV KZ Реестр выданных, переоформленных лицензий на осуществление отдельных видов банковских операций"], # 18
-            [govkz_bannedbanks.data_unit_iterator(),
-             "GOV KZ РЕЕСТР ПРИОСТАНОВЛЕННЫХ, ЛИБО ПРЕКРАТИВШИХ ДЕЙСТВИЕ (ЛИШЕННЫХ) ЛИЦЕНЗИЙ НА ПРОВЕДЕНИЕ БАНКОВСКИХ И ИНЫХ ОПЕРАЦИЙ, ОСУЩЕСТВЛЯЕМЫХ БАНКАМИ"], # 19
-            [govkz_banned_fin_organizations.data_unit_iterator(),
-             "GOV KZ Реестр приостановленных, либо прекративших действие (лишенных) лицензий на осуществление отдельных видов банковских операций"], # 20
-            [govkz_refund_organizations.data_unit_iterator(),
-             "GOV KZ Реестр прекративших действие лицензий организаций, осуществлявших отдельные виды банковских операций в связи с добровольным возвратом."], # 21
-            [govkz_bannedbanks_2level.data_unit_iterator(),
-             "GOV KZ Реестр прекративших действие лицензий банков второго уровня в связи с добровольным возвратом"], # 22
+            [govkz_securities_transactions.data_unit_iterator(),  # 17
+             "GOV KZ Реестр выданных, переоформленных лицензий на проведение банковских и иных операций и осуществление деятельности на рынке ценных бумаг"],
+            [govkz_individual_banking_transactions.data_unit_iterator(),  # 18
+             "GOV KZ Реестр выданных, переоформленных лицензий на осуществление отдельных видов банковских операций"],
+            [govkz_bannedbanks.data_unit_iterator(),  # 19
+             "GOV KZ РЕЕСТР ПРИОСТАНОВЛЕННЫХ, ЛИБО ПРЕКРАТИВШИХ ДЕЙСТВИЕ (ЛИШЕННЫХ) ЛИЦЕНЗИЙ НА ПРОВЕДЕНИЕ БАНКОВСКИХ И ИНЫХ ОПЕРАЦИЙ, ОСУЩЕСТВЛЯЕМЫХ БАНКАМИ"],
+            [govkz_banned_fin_organizations.data_unit_iterator(),  # 20
+             "GOV KZ Реестр приостановленных, либо прекративших действие (лишенных) лицензий на осуществление отдельных видов банковских операций"],
+            [govkz_refund_organizations.data_unit_iterator(),  # 21
+             "GOV KZ Реестр прекративших действие лицензий организаций, осуществлявших отдельные виды банковских операций в связи с добровольным возвратом."],
+            [govkz_bannedbanks_2level.data_unit_iterator(),  # 22
+             "GOV KZ Реестр прекративших действие лицензий банков второго уровня в связи с добровольным возвратом"],
             [govkz_unfairactivity_organization.data_unit_iterator(),
              "GOV KZ Список организаций, имеющих признаки недобросовестной деятельности"],  # 23
             [cbr_unlicensing.data_unit_iterator(),
@@ -129,4 +130,21 @@ class Parsers:
             [bot.data_unit_iterator(), "BOT"],  # 38
             [cbb.data_unit_iterator(), "CBB"],  # 39
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
-        ]
+        ][22:24]
+
+    @staticmethod
+    def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
+        if type_of_log == 'info':
+            logging.info(text)
+            tg_bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], text)
+        if type_of_log == 'error':
+            logging.error(text)
+            tg_bot.send_message(env['CHAT_FOR_ERROR_LOGS'], text)
+
+    def logging_for_tg(self, data_units: list[str, int], amount: int):
+        parsers_msg = ''
+        for d_u in data_units:
+            parsers_msg += self.ONE_PARSER_MSG.format(d_u[0], str(d_u[1]))
+
+        sending_message = self.SUCCESS_PARSERS_LOG_MSG.format(parsers_msg, str(amount))
+        tg_bot.send_message(env['CHAT_FOR_SUCCESS_LOGS'], sending_message, parse_mode='html')

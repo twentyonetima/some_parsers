@@ -112,15 +112,15 @@ def data_unit_iterator() -> BaseDataUnit:
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
-
     for category_object in list_of_categories_from_pdf:
         cbr_signs_of_illegal_activity = category_object['category_title']
         for site_name in category_object['all_sites']:
-            name = ''
             url = site_name
             if ' / ' in site_name:
                 name = site_name.split(' / ')[1]
                 url = site_name.split(' / ')[0]
+            else:
+                name = site_name
             try:
                 data_unit = BaseDataUnit(
                     type='black_list',
