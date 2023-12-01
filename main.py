@@ -60,7 +60,7 @@ class Parsers:
             time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
         except Exception as e:
             self.parsers_data.append([source_name, -1])
-            self.write_log_and_send_to_telegram('f"Current resource was stopped cause of global error: {e}"',
+            self.write_log_and_send_to_telegram(f"Current resource was stopped cause of global error: {e}",
                                                 'error')
         finally:
             if 'connection' in locals():
@@ -132,7 +132,7 @@ class Parsers:
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
             [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
             [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
-        ]
+        ][1:2]
 
     @staticmethod
     def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
