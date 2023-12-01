@@ -1,0 +1,38 @@
+[
+    {
+        "name": "10CryptoMarket",
+        "Domicile": "",
+        "legal_entity_address": "Рю де Бургонь 5, 1211 Женева",
+        "social_networks": "https://www.10cryptomarket.com/",
+        "Commercial register": "Не внесено в торговый реестр",
+        "Remarks": "",
+        "type": "black_list"
+    },
+    {
+        "Domicile": "",
+        "legal_entity_address": "20-22 Венлок Роуд, N1 7GU Лондон",
+        "social_networks": "http://www.1a-credit-now.ch",
+        "Commercial register": "Не внесено в торговый реестр",
+        "Remarks": "",
+        "name": "1APayment AG",
+        "type": "black_list"
+    },
+    {
+        "legal_entity_address": "Баррештрассе 82, 6300 Кувшин",
+        "social_networks": "www.1apcoin.com, www.1apayment.com, www.1tus.io",
+        "Commercial register": "Не внесено в торговый реестр",
+        "Remarks": "",
+        "name": "1oakmg Sagl",
+        "Domicile": "Stabio",
+        "type": "black_list"
+    },
+    {
+        "social_networks": "-",
+        "Commercial register": "Внесен в торговый реестр",
+        "Remarks": "",
+        "name": "24Trades",
+        "Domicile": "",
+        "legal_entity_address": "Цюрих, Швейцария",
+        "type": "black_list"
+    }
+]

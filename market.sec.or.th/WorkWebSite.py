@@ -77,10 +77,13 @@ def test(url, driver, type_list):
                     if count == len(key):
                         json_dictionary['type'] = type_list
                         json_dictionary['source'] = url
+                        json_dictionary['Country'] = 'Philippines'
                         all_dictonary.append(json_dictionary)
                         json_dictionary = {}
                         count += 1
 
             page_number += 1
+        if len(list_data) >= 100:
+            break
 
     return all_dictonary

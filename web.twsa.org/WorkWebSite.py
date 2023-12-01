@@ -129,12 +129,12 @@ def test(url, driver, type_list):
                                 value.append(string)
                                 string = ""
                             else:
-                                key.append('social_networks')
+                                key.append('links')
                                 for j in range(len(split_list_2[count])):
                                     items = split_list_2[count][j]
                                     if items != "Сайт":
                                         string += items + " "
-                                value.append(string)
+                                value.append([string, ])
                                 string = ""
                         case 5:
                             if len(split_list_2) == 8:
