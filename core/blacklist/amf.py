@@ -61,7 +61,7 @@ def data_unit_iterator() -> BaseDataUnit:
         if len(td) == 0:
             end = True
             continue
-        print(f"page {index} is processing...")
+        # print(f"page {index} is processing...")
         index += 1
 
         date = bs.find_all('div', 'date')
