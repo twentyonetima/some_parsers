@@ -21,9 +21,13 @@ def data_unit_iterator() -> BaseDataUnit:
     for i in td:
         date = None
         parent = i
+        depth = 1
         while not date:
+            if depth > 5:
+                break
             parent = parent.parent
             date = parent.find('div', {'class': 'date'})
+            depth += 1
         date = translate(date.text)
         name = i.text
         link_text = str(i.next_sibling) or str(i.previous_sibling)
@@ -37,23 +41,16 @@ def data_unit_iterator() -> BaseDataUnit:
             ulr_name = extractor.find_urls(name)
             if ulr_name:
                 links = ulr_name
-            items.append({
-                'name': name,
-                'links': links,
-                'date': date
-            })
-
-    for item in items:
-        try:
-            data_unit = BaseDataUnit(
-                type='black_list',
-                source='https://www.consob.it/web/consob-and-its-activities/warnings?viewId=ultime_com_tutela',
-                name=item.get('name'),
-                links=item.get('links', []),
-                date_publish=item.get('date'),
-                country='Италия'
-            )
-            yield data_unit.model_dump_json()
-        except Exception as e:
-            logging.error(e)
-            logging.error(f"Error while atempt to transform following row")
+            try:
+                data_unit = BaseDataUnit(
+                    type='black_list',
+                    source='https://www.consob.it/web/consob-and-its-activities/warnings?viewId=ultime_com_tutela',
+                    name=name,
+                    links=links,
+                    date_publish=date,
+                    country='Италия'
+                )
+                yield data_unit.model_dump_json()
+            except Exception as e:
+                logging.error(e)
+                logging.error(f"Error while atempt to transform following row")
