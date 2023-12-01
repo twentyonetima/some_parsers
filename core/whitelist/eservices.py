@@ -40,14 +40,6 @@ def data_unit_iterator() -> BaseDataUnit:
                             phones=phone,
                             country='Сингапур'
                         )
-                        print({
-                            'type': 'white_list',
-                            'source': 'https://eservices.mas.gov.sg/fid/institution',
-                            'name': company_name,
-                            'organizational_and_legal_form': address,
-                            'phones': phone,
-                            'country': 'Сингапур'
-                        })
                         yield data_unit.model_dump_json()
                     except Exception as e:
                         logging.error(e)
