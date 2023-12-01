@@ -16,7 +16,6 @@ def data_unit_iterator() -> BaseDataUnit:
     extractor = URLExtract()
 
     td = bs.select('li b')
-    items = []
 
     for i in td:
         date = None
