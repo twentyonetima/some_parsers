@@ -14,7 +14,7 @@ from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
                             scm, base_1, base_3, base_5, base_9, base_10,
-                            bot, cbb, centralbank,
+                            bot, cbb, centralbank, eservices, fma
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
@@ -130,6 +130,8 @@ class Parsers:
             [bot.data_unit_iterator(), "BOT"],  # 38
             [cbb.data_unit_iterator(), "CBB"],  # 39
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
+            [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
+            [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
         ]
 
     @staticmethod
