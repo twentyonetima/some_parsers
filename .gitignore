@@ -2,3 +2,8 @@
 market.sec.or.th
 web.twsa.org
 venv
+/ETL.log
+/.idea
+venv
+__pycache__
+.env
