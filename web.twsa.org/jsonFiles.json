@@ -1,0 +1,29 @@
+[
+    {
+        "organizational_and_legal_forms": "FCA",
+        "date_publish": "2023/08/31",
+        "addresses_of_exchange_offices": "Европа / Великобритания (Великобритания)",
+        "name": " Trade Rescue ",
+        "remarks": "Предупреждение Управления финансового надзора Великобритании (FCA): Мы считаем, что эта компания предоставляет финансовые услуги или продукты в Великобритании без нашего разрешения.",
+        "organizational_and_legal_form": " Karduansmakargatan 2C, Стокгольм, ШВЕЦИЯ, 111 52. ",
+        "email": " jamesmorrison@traderescue.net, support@trade-rescue.com ",
+        "social_networks": " traderescue.net, trade-rescue.com. ",
+        "other": "",
+        "type": "black_list",
+        "source": "http://web.twsa.org.tw/alert/Default.aspx"
+    },
+    {
+        "organizational_and_legal_forms": "FCA",
+        "date_publish": "2023/08/31",
+        "addresses_of_exchange_offices": "Европа / Великобритания (Великобритания)",
+        "name": " HUBSCAPITAL.ORG / HUBSCAPITAL ",
+        "remarks": "Предупреждение Управления финансового надзора Великобритании (FCA): Мы считаем, что эта компания предоставляет финансовые услуги или продукты в Великобритании без нашего разрешения.",
+        "organizational_and_legal_form": " 84 Грейт-Саффолк-стрит, Лондон, ВЕЛИКОБРИТАНИЯ, SE1 0BL ",
+        "email": " support@hubscapital.org. ",
+        "social_networks": " https ",
+        "other": "",
+        "number": " +447438149339 ",
+        "type": "black_list",
+        "source": "http://web.twsa.org.tw/alert/Default.aspx"
+    }
+]
