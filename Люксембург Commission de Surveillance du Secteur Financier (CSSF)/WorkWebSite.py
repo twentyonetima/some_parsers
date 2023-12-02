@@ -82,7 +82,7 @@ def test(url, driver, type_list):
 
     click_button(driver, ".cookie-btn", 3)
     time.sleep(3)
-    while page_number < 2:
+    while page_number < 28:
         list_data = change_using(driver, ".library-element__title")
         for i in list_data:
             read_files.append(i.find_element(By.CSS_SELECTOR, 'a').get_attribute("href"))

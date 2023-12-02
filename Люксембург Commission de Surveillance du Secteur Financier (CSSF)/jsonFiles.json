@@ -9,7 +9,8 @@
         "Note:": "Неизвестные люди и веб-сайт выдают себя за организацию Lux-Bond.",
         "name": "LUX-BOND\n·        Undertaking for collective investment that fall under the Law of 17 December 2010\n ",
         "data published": "Published on 27 November 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Bitgamo S.A.",
@@ -22,7 +23,8 @@
         "phones": "/",
         "Note:": "Предприятие не зарегистрирована в CSSF, чтобы предложить услуги для виртуальных активов в Luxembourg или из.Ни одна компания с названием «Bitgamo S.A.»появляется в торговле и регистрации компаний.",
         "data published": "Published on 10 November 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "Name": "KT Investment",
@@ -35,7 +37,8 @@
         "Note:": "Неизвестная организация, названная KT Investment, предлагает банковские услуги, в то же время мошенническую ссылку на Banque Raiffeisen в качестве «банка партнеров».",
         "name": "Banque Raiffeisen\n·        bank",
         "data published": "Published on 8 November 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "BVBB Bellavista Bitcoin Bank Bella Vista Bitcoin Investment Banking BVBB LLC BVBB Treasury BVBB Inv.",
@@ -48,7 +51,8 @@
         "phones": "/",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление банковских услуг, инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 27 October 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Arctradeassets",
@@ -61,7 +65,8 @@
         "phones": "/",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 24 October 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Althos Invest SA",
@@ -72,7 +77,8 @@
         "phones": "/",
         "Note:": "Организация, которая предлагает, среди прочего, так называемый «Livret de Placement Optimum», не контролируется CSSF, и она не получила никакого разрешения на предоставление инвестиционных услуг или других финансовых услуг в Luxembourg или из или из.",
         "data published": "Published on 12 October 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": [
@@ -83,7 +89,8 @@
         "Alleged registered offices:": "1, rue Phillipe II L 2340-Luxembourg 154, Rue Albert Unden, 2652 Limpertsberg Luxembourg Rue du St Esprit, 1475 Ville-Haute, Luxembourg",
         "Note:": "Неизвестные лица, обманутые, относятся к бывшей компании Luxembourg Blockchain Luxembourg S.A. / Blockchain.com Group Holdings, Inc., которая прекратила свою деятельность в Люксембурге с 22 октября 2021 года.",
         "data published": "Published on 11 October 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Emeneker",
@@ -96,7 +103,8 @@
         "phones": "+41 31 520 2190",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 29 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": "/",
@@ -106,7 +114,8 @@
         "Note:": "Неизвестные лица используют, для мошеннических целей, личность бывшего кредитного института Люксембурга Catella Bank S.A., которое прекратило свою банковскую деятельность в 2021 году. После поправки к своей юридической форме и корпоративной названии в 2023 году компания Catella Bank S.A. зарегистрирована, сТорговый и компании Luxembourg Trade and Companies под названием Catella Luxembourg S.à R.L ..",
         "name": "CATELLA Luxembourg S.à r.l.\n(formerly Catella Bank S.A.)\n26, Boulevard de Kockelscheuer\nL-1821 Luxembourg",
         "data published": "Published on 28 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Capellenis",
@@ -119,7 +128,8 @@
         "phones": "/",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 25 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "Kapitec Invest",
@@ -132,7 +142,8 @@
         "phones": "+33 6 44 68 06 05",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление банковских услуг, инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 22 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": [
@@ -142,7 +153,8 @@
         "phones": "+43 6608450812",
         "Note:": "Веб -сайт / Неизвестные лица выдают себя за комиссию De Supillance Du Secteur Financier.\nCSSF желает указать, что он использует только формат адреса @CSSF.LU для своих электронных сообщений.",
         "data published": "Published on 19 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": "/",
@@ -152,7 +164,8 @@
         "Note:": "Неизвестные лица, обманывающие, выдают себя за организацию 3S Money (Luxembourg) S.A.",
         "name": "3S Money (Luxembourg) S.A.\n·         Electronic money institutions",
         "data published": "Published on 15 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "name": "EverMarketsFX (Comoros) Ltd",
@@ -165,7 +178,8 @@
         "phones": "+34672520204",
         "Note:": "Предприятие не контролируется CSSF, и ей не было предоставлено никакого разрешения на предоставление инвестиционных услуг или других финансовых услуг в Люксембурге или из или из.",
         "data published": "Published on 15 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": [
@@ -177,7 +191,8 @@
         "Note:": "Веб -сайт / Неизвестные лица выдают себя за организацию Обуссона, держащего С.А.",
         "name": "Aubusson Holding S.A.\n·         Financial holdings (Soparfi)\n33, Boulevard Prince Henri\nL-1724 LUXEMBOURG",
         "data published": "Published on 11 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": [
@@ -189,7 +204,8 @@
         "Note:": "Веб-сайт / Неизвестные лица неправильно используют название элитного управления богатством SIF-SICAV S.A.",
         "name": "Elite Wealth Management SIF-SICAV S.A.\n·        Alternative investment fund managers according to the Law of 12 July 2013\n·        Specialised investment funds that fall under the Law of 13 February 2007",
         "data published": "Published on 5 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": "/",
@@ -199,7 +215,8 @@
         "Note:": "Неизвестные лица контактируют без потенциальных инвесторов, представляя себя в качестве ипотечных кредитных посредников и предлагая ипотечные кредиты.\nПри этом они отправляют ипотечные кредитные соглашения, злоупотребляя названием «Банковский круг».",
         "name": "Banking Circle S.A.\n·         Bank",
         "data published": "Published on 4 September 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": "/",
@@ -209,7 +226,8 @@
         "Note:": "Неизвестные лица контактируют без потенциальных инвесторов, представляющих себя, представляя себя «BGL BNP Paribas».",
         "name": "BGL BNP Paribas\n·         Bank",
         "data published": "Published on 30 August 2023",
-        "type": "black_list"
+        "type": "black_list",
+        "Country": "Luxembourg"
     },
     {
         "links": "dma.gd-accesprive.com",

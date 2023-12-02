@@ -28,7 +28,7 @@ def test(url, driver, type_list):
     all_dictonary = []
     page_number = 1
     time.sleep(3)
-    while page_number < 4:
+    while page_number < 80:
 
         value = []
         key = []

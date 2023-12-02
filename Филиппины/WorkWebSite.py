@@ -51,12 +51,13 @@ def parsing(url, driver, type_list):
     buton_number = 0
     buton_number_next = 0
 
-    while page_number < 1:
+    while page_number < 13:
         print("Button number", buton_number)
         time.sleep(10)
         if buton_number != 0:
             time.sleep(25)
             button[buton_number].click()
+            time.sleep(5)
 
         for i in list_data:
             if buton_number > 3:

@@ -31,7 +31,7 @@ def test(url, driver, type_list):
     buttn_click = driver.find_element(By.CSS_SELECTOR, ".js-cookie-consent-all-btn")
     buttn_click.click()
 
-    while page_number < 3:
+    while page_number < 162:
         time.sleep(3)
         value = []
         key = []

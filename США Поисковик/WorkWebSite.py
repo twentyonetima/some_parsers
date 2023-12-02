@@ -43,7 +43,7 @@ def parsing(url, driver, type_list):
         if j != 0:
             data_links.append(data_published_link[j][0].get_attribute("href"))
 
-    while page_number < 10:       #10 для тестов
+    while page_number < len(data_links):       #10 для тестов
         print(data_links[page_number])
         driver.get(data_links[page_number])
         count_organization += 1
