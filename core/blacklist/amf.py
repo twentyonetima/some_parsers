@@ -60,7 +60,7 @@ def data_unit_iterator() -> BaseDataUnit:
     list_of_categories_from_pdf = read_categories()
 
     translator = Translator()
-    index = 145
+    index = 0
     end = False
     while not end:
         response = requests.get(
@@ -126,8 +126,7 @@ def data_unit_iterator() -> BaseDataUnit:
                     date_publish=date_text[i],
                     cbr_signs_of_illegal_activity=cbr_signs_of_illegal_activity
                 )
-                print(data_unit)
-                # yield data_unit.model_dump_json()
+                yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
@@ -151,11 +150,7 @@ def data_unit_iterator() -> BaseDataUnit:
                     links=[url] if '@' not in url else [],
                     cbr_signs_of_illegal_activity=cbr_signs_of_illegal_activity
                 )
-                print(data_unit)
-                # yield data_unit.model_dump_json()
+                yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
-
-
-data_unit_iterator()
