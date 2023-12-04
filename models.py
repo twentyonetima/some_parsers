@@ -117,3 +117,4 @@ class BaseDataUnit(BaseModel):
     govkz_type_of_activity: str = Field(default="")
     govkz_activity_suspension_details: str = Field(default="")
     govkz_activity_suspension_grounds: str = Field(default="")
+    has_multiple_names: int = Field(default=0)

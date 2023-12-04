@@ -43,7 +43,8 @@ def data_unit_iterator() -> BaseDataUnit:
                     links=links,
                     social_networks=[social_networks],
                     remarks=translate(i[2]) if len(i) > 2 else '',
-                    country='ОАЭ'
+                    country='ОАЭ',
+                    has_multiple_names=1,
                 )
                 yield data_unit.model_dump_json()
             except Exception as e:

@@ -132,7 +132,7 @@ class Parsers:
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
             [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
             [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
-        ][1:2]
+        ]
 
     @staticmethod
     def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:

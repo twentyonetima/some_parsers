@@ -1,6 +1,7 @@
 import logging
 import requests
 
+from core.utils.consts import LIST_OF_SOCIAL_SITE_DOMAINS
 from models import BaseDataUnit
 import pandas as pd
 
@@ -20,14 +21,22 @@ def data_unit_iterator() -> BaseDataUnit:
                 row.iloc[3] = ""
             if not isinstance(row.iloc[4], str):
                 row.iloc[4] = ""
+            social_networks = []
+            links = []
+            for s in row['Site'].split(', '):
+                if any(domain in s for domain in LIST_OF_SOCIAL_SITE_DOMAINS):  # Проверка на соц. сеть
+                    social_networks.append(s)
+                else:
+                    links.append(s)
             data_unit = BaseDataUnit(
                 type='black_list',
                 cbr_license_revocation_date=row['DT'],
                 name=row['Name'],
                 legal_entity_address=row['ADDR'],
-                links=[row['Site']],
+                links=links,
+                social_networks= social_networks,
                 cbr_license_revokation_reason=row['Sign'],
-                source='https://www.gov.kz/',
+                source='https://cbr.ru',
                 country='Россия'
             )
             yield data_unit.model_dump_json()
