@@ -179,7 +179,7 @@ def data_unit_iterator() -> BaseDataUnit:
             try:
                 data_unit = BaseDataUnit(
                     type='white_list',
-                    name=translate(data.get('name')),
+                    name=data.get('name'),
                     legal_entity_address=data.get('legal_entity_adress'),
                     source='https://portal.mvp.bafin.de/database/InstInfo/sucheForm.do?&sucheButtonInstitut=Suche'
                 )

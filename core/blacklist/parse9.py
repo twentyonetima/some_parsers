@@ -19,7 +19,7 @@ def data_unit_iterator():
     last_page = last_page[0].get("href")[6:]
 
     sites = []
-    for page in range(int(last_page) + 1):
+    for page in range(71, int(last_page) + 1):
         response1 = requests.get(
             url=f"{source}?page={page}")
         soup = BeautifulSoup(response1.text, "html.parser")
@@ -38,9 +38,15 @@ def data_unit_iterator():
             response = requests.get(url=f"https://www.fca.org.uk{site[1]}")
             soup = BeautifulSoup(response.text, "lxml")
             main_text = soup.find_all("section", class_="copy-block default")
-            paragrapths_blocks = main_text[1].text
+            try:
+                paragrapths_blocks = main_text[1].text
+            except:
+                paragrapths_blocks = main_text[0].text
             paragrapths = paragrapths_blocks.split("\n")
             data = {}
+
+            if "Name:" not in paragrapths_blocks:
+                continue
 
             for paragraph in paragrapths:
                 if "Name:" in paragraph:
@@ -74,7 +80,7 @@ def data_unit_iterator():
                     source=source,
                 )
                 yield data_unit.model_dump_json()
-            except:
+            except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
         sites = []
