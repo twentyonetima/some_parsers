@@ -23,7 +23,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 phones=row.iloc[7] if isinstance(row.iloc[7], str) or not math.isnan(row.iloc[7]) else '',
                 email=row.iloc[8] if isinstance(row.iloc[8], str) or not math.isnan(row.iloc[8]) else '',
                 cbr_counselor_license_issue_date=row.iloc[9] if isinstance(row.iloc[9], str) or not math.isnan(row.iloc[9]) else '',
-                source='https://cbr.ru',
+                source=excel_table_link,
                 country='Россия'
             )
             yield data_unit.model_dump_json()

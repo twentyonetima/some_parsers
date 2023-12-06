@@ -20,7 +20,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 cbr_license_period=row.iloc[5],
                 cbr_license_revocation_date=row.iloc[6],
                 cbr_license_revokation_reason=row.iloc[7],
-                source='https://cbr.ru',
+                source=excel_table_link,
                 country='Россия'
             )
             yield data_unit.model_dump_json()

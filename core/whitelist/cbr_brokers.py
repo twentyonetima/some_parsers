@@ -22,7 +22,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 social_networks=[row.iloc[6]],
                 phones=row.iloc[5],
                 cbr_counselor_license_issue_date=row.iloc[7],
-                source='https://cbr.ru',
+                source=excel_table_link,
                 country='Россия'
             )
             yield data_unit.model_dump_json()

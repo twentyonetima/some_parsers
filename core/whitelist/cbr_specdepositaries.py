@@ -24,7 +24,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 legal_entity_address=row.iloc[8],
                 phones=row.iloc[9],
                 links=[row.iloc[10]],
-                source='https://cbr.ru',
+                source=excel_table_link,
                 country='Россия'
             )
             yield data_unit.model_dump_json()
