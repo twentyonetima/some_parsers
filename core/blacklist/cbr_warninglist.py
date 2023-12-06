@@ -36,7 +36,7 @@ def data_unit_iterator() -> BaseDataUnit:
                 links=links,
                 social_networks= social_networks,
                 cbr_license_revokation_reason=row['Sign'],
-                source='https://cbr.ru',
+                source=SOURCE_URL,
                 country='Россия'
             )
             yield data_unit.model_dump_json()

@@ -124,9 +124,9 @@ class Parsers:
             [base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
             [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
-            [parse3.data_unit_iterator(), "Parse3"],  # 35
-            [parse7.data_unit_iterator(), "Parse7"],  # 36
-            [parse9.data_unit_iterator(), "Parse9"],  # 37
+            [parse3.data_unit_iterator(), "Parse3"],  # 35    # Переименовать
+            [parse7.data_unit_iterator(), "Parse7"],  # 36    # Переименовать
+            [parse9.data_unit_iterator(), "Parse9"],  # 37    # Переименовать
             [bot.data_unit_iterator(), "BOT"],  # 38
             [cbb.data_unit_iterator(), "CBB"],  # 39
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40

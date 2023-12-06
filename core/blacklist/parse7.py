@@ -1,13 +1,9 @@
-import asyncio
-import json
 import logging
 
-import aiohttp
 import requests
 from bs4 import BeautifulSoup
 
 from models import BaseDataUnit
-
 
 source = 'https://www.fsma.be/en/warnings/companies-operating-unlawfully-in-belgium'
 
@@ -32,7 +28,6 @@ def data_unit_iterator():
         current = 0
         for i in range(len(all_obj) // 5):
             title = all_obj[current].text.strip()
-            # urls = all_obj[current + 2].text.strip()
             urls = [x.text for x in all_obj[current + 2].findAll('li')] if all_obj[current + 2].findAll('li') else []
 
             note = all_obj[current + 3].text.strip()
