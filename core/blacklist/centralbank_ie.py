@@ -4,7 +4,6 @@ import re
 
 import requests
 
-from core.utils.translate import translate
 from models import BaseDataUnit
 
 
@@ -22,16 +21,13 @@ def data_unit_iterator() -> BaseDataUnit:
             name = company.get('firmName', '')
             if name:
                 name = name.strip()
-                country = company.get('country', '')
-                country = country.replace('Unknown', '')
-                country = translate(country)
                 publish_date = company.get('warningDate', '')
                 try:
                     data_unit = BaseDataUnit(
                         type='black_list',
                         name=name,
                         date_publish=publish_date,
-                        country=country,
+                        country='Ирландия',
                         source=url,
                     )
                     yield data_unit.model_dump_json()
