@@ -1,10 +1,14 @@
 import logging
 import time
 from datetime import datetime
+from typing import Union, Any
+
 import pika
 from dotenv import dotenv_values
 
 import telebot
+
+from models import BaseDataUnit
 
 env = dotenv_values(".env")
 
@@ -13,7 +17,7 @@ tg_bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, fma_govt_nz_business, finanssivalvonta, registers_centralbank_ie, base_9, base_10,
+                            afa, scm, fma_govt_nz_business, finanssivalvonta, registers_centralbank_ie, base_10,
                             bot, cbb, centralbank, eservices, fma
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
@@ -76,7 +80,7 @@ class Parsers:
         self.write_log_and_send_to_telegram(f"Loop of scraping has been finished {datetime.now()}")
 
     @staticmethod
-    def list_of_parsers() -> list[callable, str]:
+    def list_of_parsers() -> list[Union[list[Union[BaseDataUnit, str]], Any]]:
         return [
             [bafin.data_unit_iterator(), "Белый список.Корпоративная база данных BaFin"],  # 0
             [consob.data_unit_iterator(), "Черный список. Список предупреждений Италии"],  # 1
@@ -121,7 +125,7 @@ class Parsers:
             [finanssivalvonta.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
             [registers_centralbank_ie.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
             [osc.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
-            [base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
+            [afa.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
             [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
             [moneysmart_au.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Австралии"],  # 35
