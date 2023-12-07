@@ -23,7 +23,7 @@ from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
                             govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
-                            base_2, osc, base_11, parse3, parse7, parse9
+                            base_2, osc, base_11, parse3, parse7, parse9, centralbank_ie
                             )
 
 
@@ -136,6 +136,7 @@ class Parsers:
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
             [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
             [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
+            [centralbank_ie.data_unit_iterator(), "Список неавторизованных фирм Ирландии"],  # 43
         ]
 
     @staticmethod
