@@ -20,8 +20,7 @@ def data_unit_iterator() -> BaseDataUnit:
     chrome_options.add_argument("--remote-debugging-port=9222")
 
     driver = webdriver.Chrome(options=chrome_options)
-    browser = driver
-    browser.get(url)
+    driver.get(url)
 
     driver.find_element(By.ID, "declineButton").click()
     driver.find_element(By.ID, "prospectus-search-button").click()
@@ -34,7 +33,7 @@ def data_unit_iterator() -> BaseDataUnit:
     for element in driver.find_elements(By.CLASS_NAME, "prospectus-row"):
         element.click()
 
-    file_text = browser.page_source
+    file_text = driver.page_source
     soup = BeautifulSoup(file_text, features='lxml')
     all_firms = soup.find_all('tbody', 'info-visible')
 

@@ -18,9 +18,10 @@ def data_unit_iterator() -> BaseDataUnit:
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument("--remote-debugging-port=9222")
+
     driver = webdriver.Chrome(service=service, options=chrome_options)
-    browser = driver
-    browser.get(url)
+    driver.get(url)
 
     driver.find_element(By.ID, "ctl00_cphRegistersMasterPage_btnFirmNameSearch").click()
 
@@ -30,7 +31,7 @@ def data_unit_iterator() -> BaseDataUnit:
     while not previous_ref == new_ref:
         previous_ref = new_ref
 
-        file_text = browser.page_source
+        file_text = driver.page_source
         soup = BeautifulSoup(file_text, features='lxml')
         table = soup.find('div', id='content')
         table = table.find_all('tr')
