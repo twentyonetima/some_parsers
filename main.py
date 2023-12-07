@@ -17,13 +17,13 @@ tg_bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, base_1, finanssivalvonta, registers_centralbank_ie, afa, base_10,
+                            afa, scm, fma_govt_nz_business, finanssivalvonta, registers_centralbank_ie, base_10,
                             bot, cbb, centralbank, eservices, fma
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
                             govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
-                            base_2, osc, base_11, parse3, parse7, parse9
+                            fma_govt_nz_scams, osc, base_11, moneysmart_au, fsma, fca_uk
                             )
 
 
@@ -120,19 +120,19 @@ class Parsers:
             [cbr_warninglist.data_unit_iterator(),
              "ЦБ РФ Список компаний с выявленными признаками нелегальной деятельности на финансовом рынке"],  # 25
             [govkz_new_reestr.data_unit_iterator(), "Реестр финансовых пирамид"],  # 26
-            [base_1.data_unit_iterator(), "FMA Лицензированные и подотчетные лица"],  # 27
-            [base_2.data_unit_iterator(), "FMA Предупреждения и оповещения"],  # 28    ################ До этого есть.
+            [fma_govt_nz_business.data_unit_iterator(), "FMA Лицензированные и подотчетные лица"],  # 27
+            [fma_govt_nz_scams.data_unit_iterator(), "FMA Предупреждения и оповещения"],  # 28
             [finanssivalvonta.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
             [registers_centralbank_ie.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
             [osc.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
             [afa.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
             [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
-            [parse3.data_unit_iterator(), "Parse3"],  # 35    # Переименовать
-            [parse7.data_unit_iterator(), "Parse7"],  # 36    # Переименовать
-            [parse9.data_unit_iterator(), "Parse9"],  # 37    # Переименовать
-            [bot.data_unit_iterator(), "BOT"],  # 38
-            [cbb.data_unit_iterator(), "CBB"],  # 39
+            [moneysmart_au.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Австралии"],  # 35
+            [fsma.data_unit_iterator(), "Черный список. Список компаний, незаконно действующих в Бельгии"],  # 36
+            [fca_uk.data_unit_iterator(), "Черынй список.Список предупреждений FCA о неавторизованных фирмах UK"],  # 37
+            [bot.data_unit_iterator(), "Белый список.Реестр лицензированных поставщиков Тайланда"],  # 38
+            [cbb.data_unit_iterator(), "CBB. Белый список. Бахрейн"],  # 39
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
             [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
             [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
