@@ -13,13 +13,13 @@ tg_bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            scm, base_1, base_3, base_5, base_9, base_10,
+                            scm, base_1, finanssivalvonta, registers_centralbank_ie, base_9, base_10,
                             bot, cbb, centralbank, eservices, fma
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
                             govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
-                            base_2, base_6, base_11, parse3, parse7, parse9
+                            base_2, osc, base_11, parse3, parse7, parse9
                             )
 
 
@@ -118,9 +118,9 @@ class Parsers:
             [govkz_new_reestr.data_unit_iterator(), "Реестр финансовых пирамид"],  # 26
             [base_1.data_unit_iterator(), "FMA Лицензированные и подотчетные лица"],  # 27
             [base_2.data_unit_iterator(), "FMA Предупреждения и оповещения"],  # 28    ################ До этого есть.
-            [base_3.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
-            [base_5.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
-            [base_6.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
+            [finanssivalvonta.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
+            [registers_centralbank_ie.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
+            [osc.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
             [base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
             [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
