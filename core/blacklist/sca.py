@@ -26,6 +26,10 @@ def data_unit_iterator() -> BaseDataUnit:
     for i in text:
         links = []
         social_networks = ''
+
+        if i[0].lower() == 'unidentified':
+            continue
+
         name = i[0]
 
         if name:
