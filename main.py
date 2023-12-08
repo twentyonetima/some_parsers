@@ -125,15 +125,9 @@ class Parsers:
             [finanssivalvonta.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
             [registers_centralbank_ie.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
             [osc.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
-<<<<<<< main.py
-            [base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
+            [afa.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [amf_espace.data_unit_iterator(), "Белый список. Реестр поставщиков инвестиционных услуг Франции"],  # 33
             [nssmc_ua.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
-=======
-            [afa.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
-            [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
-            [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
->>>>>>> main.py
             [moneysmart_au.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Австралии"],  # 35
             [fsma.data_unit_iterator(), "Черный список. Список компаний, незаконно действующих в Бельгии"],  # 36
             [fca_uk.data_unit_iterator(), "Черынй список.Список предупреждений FCA о неавторизованных фирмах UK"],  # 37

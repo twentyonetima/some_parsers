@@ -79,7 +79,7 @@ def data_unit_iterator():
                     country='Великобритания',
                     source=source,
                 )
-                yield data_unit.model_dump_json()
+                # yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
@@ -99,4 +99,14 @@ def remove_links_from_name(name: str, links: list):
         if _name[-1] in '/-':
             _name.pop(-1)
 
-    return ' '.join(_name), links
+    name = ' '.join(_name)
+
+    if len(links) == 0 and '/' in name:
+        *a, b = name.split('/')
+        name = ' '.join(a)
+        links.append(b)
+
+    return name, links
+
+
+data_unit_iterator()
