@@ -79,7 +79,7 @@ def data_unit_iterator():
                     country='Великобритания',
                     source=source,
                 )
-                # yield data_unit.model_dump_json()
+                yield data_unit.model_dump_json()
             except Exception as e:
                 logging.error(e)
                 logging.error(f"Error while atempt to transform following row")
@@ -107,6 +107,3 @@ def remove_links_from_name(name: str, links: list):
         links.append(b)
 
     return name, links
-
-
-data_unit_iterator()
