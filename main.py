@@ -17,13 +17,13 @@ tg_bot = telebot.TeleBot(env.get('BOT_TOKEN', -1))
 from core.whitelist import (national_bank_kz, cbr_forex, cbr_reestersavers, cbr_advisors,
                             cbr_trust, cbr_specdepositaries, cbr_dealers, cbr_depositaries,
                             cbr_brokers, govkz_securities_transactions, govkz_individual_banking_transactions, bafin,
-                            afa, scm, fma_govt_nz_business, finanssivalvonta, registers_centralbank_ie, base_10,
+                            scm, fma_govt_nz_business, finanssivalvonta, registers_centralbank_ie, afa, amf_espace,
                             bot, cbb, centralbank, eservices, fma
                             )
 from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks, govkz_banned_fin_organizations,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
                             govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
-                            fma_govt_nz_scams, osc, base_11, moneysmart_au, fsma, fca_uk, centralbank_ie,
+                            fma_govt_nz_scams, osc, nssmc_ua, moneysmart_au, fsma, fca_uk, centralbank_ie,
                             )
 
 
@@ -37,38 +37,38 @@ class Parsers:
     '''
 
     def publisher(self, func: callable, source_name: str) -> None:
-        try:
-            parsers_load_counter = 0
+        # try:
+        parsers_load_counter = 0
 
-            # self.write_log_and_send_to_telegram(f"ETL process with source <{source_name}> has been started")
-            logging.info(f"ETL process with source <{source_name}> has been started")
+        # self.write_log_and_send_to_telegram(f"ETL process with source <{source_name}> has been started")
+        logging.info(f"ETL process with source <{source_name}> has been started")
 
-            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-            channel = connection.channel()
-            channel.queue_declare(queue='ETL', durable=True)
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='ETL', durable=True)
 
-            for data_unit in func:
-                logging.info(data_unit)
-                channel.basic_publish(exchange='', routing_key='ETL', body=data_unit)
-                self.data_units_load_counter += 1
-                parsers_load_counter += 1
+        for data_unit in func:
+            logging.info(data_unit)
+            channel.basic_publish(exchange='', routing_key='ETL', body=data_unit)
+            self.data_units_load_counter += 1
+            parsers_load_counter += 1
 
-            self.parsers_data.append([source_name, parsers_load_counter])
-            # self.write_log_and_send_to_telegram(
-            logging.info(
-                f"ETL process with source <{source_name}> has been finished. The amount of data in "
-                f"this parser is {parsers_load_counter}. Amount of dataunits for parsing session "
-                f"(this parser and before them): {self.data_units_load_counter}")
+        self.parsers_data.append([source_name, parsers_load_counter])
+        # self.write_log_and_send_to_telegram(
+        logging.info(
+            f"ETL process with source <{source_name}> has been finished. The amount of data in "
+            f"this parser is {parsers_load_counter}. Amount of dataunits for parsing session "
+            f"(this parser and before them): {self.data_units_load_counter}")
 
-            parsers_load_counter = None
-            time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
-        except Exception as e:
-            self.parsers_data.append([source_name, -1])
-            self.write_log_and_send_to_telegram(f"Current resource was stopped cause of global error: {e}",
-                                                'error')
-        finally:
-            if 'connection' in locals():
-                connection.close()
+        parsers_load_counter = None
+        time.sleep(self.WINDOW_BETWEEN_SOURCES_SECONDS)
+        # except Exception as e:
+        #     self.parsers_data.append([source_name, -1])
+        #     self.write_log_and_send_to_telegram(f"Current resource was stopped cause of global error: {e}",
+        #                                         'error')
+        # finally:
+        if 'connection' in locals():
+            connection.close()
 
     def start_parsing(self) -> None:
         self.write_log_and_send_to_telegram(f"Loop of scraping has been started {datetime.now()}")
@@ -125,9 +125,15 @@ class Parsers:
             [finanssivalvonta.data_unit_iterator(), "Реестр утвержденных ценных бумаг Финляндия"],  # 29
             [registers_centralbank_ie.data_unit_iterator(), "Реестр поставщиков финансовых услуг"],  # 30
             [osc.data_unit_iterator(), "Предупреждения и оповещения инвесторов Канады"],  # 31
+<<<<<<< main.py
+            [base_9.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
+            [amf_espace.data_unit_iterator(), "Белый список. Реестр поставщиков инвестиционных услуг Франции"],  # 33
+            [nssmc_ua.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
+=======
             [afa.data_unit_iterator(), "Реестр уполномоченных лиц Андорры"],  # 32
             [base_10.data_unit_iterator(), "Список PSAN, зарегистрированных в AMF"],  # 33
             [base_11.data_unit_iterator(), "Реестр защиты украинских инвесторов"],  # 34
+>>>>>>> main.py
             [moneysmart_au.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Австралии"],  # 35
             [fsma.data_unit_iterator(), "Черный список. Список компаний, незаконно действующих в Бельгии"],  # 36
             [fca_uk.data_unit_iterator(), "Черынй список.Список предупреждений FCA о неавторизованных фирмах UK"],  # 37
