@@ -12,7 +12,7 @@ from models import BaseDataUnit
 def data_unit_iterator() -> BaseDataUnit:
     url = 'https://registers.centralbank.ie/FirmSearchPage.aspx'
 
-    service = Service(driver='/chromedriver/')
+    service = Service(driver='/snap/bin/chromium.chromedriver')
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
@@ -60,3 +60,4 @@ def data_unit_iterator() -> BaseDataUnit:
         except Exception as e:
             print(e)
             new_ref = previous_ref
+    driver.quit()

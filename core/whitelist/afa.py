@@ -3,6 +3,7 @@ import logging
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.service import Service
 
 from core.utils.translate import translate
 from models import BaseDataUnit
@@ -38,9 +39,11 @@ def data_unit_iterator() -> BaseDataUnit:
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
-        # chrome_options.add_argument("--remote-debugging-port=9222")  # локально с этой строчкой не работает
 
-        driver = Chrome(chrome_options)
+        chrome_options.add_argument("--remote-debugging-port=9222")  # локально с этой строчкой не работает
+        service = Service(driver='/snap/bin/chromium.chromedriver')
+        driver = Chrome(service=service, options=chrome_options)
+        # driver = webdriver.Chrome(options=chrome_options)  # Для локальной работы
         driver.get(url)
 
         soup = BeautifulSoup(driver.page_source, features='lxml')
@@ -84,3 +87,4 @@ def data_unit_iterator() -> BaseDataUnit:
                     except Exception as e:
                         logging.error(e)
                         logging.error(f"Error while atempt to transform following row")
+        driver.quit()

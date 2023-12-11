@@ -35,13 +35,15 @@ def text_cleaner(text_to_clean):
 def data_unit_iterator():
     global ref
 
-    service = Service(driver='/chromedriver/')
-
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+
+    chrome_options.add_argument("--remote-debugging-port=9222")  # локально с этой строчкой не работает
+    service = Service(driver='/snap/bin/chromium.chromedriver')
     driver_1 = webdriver.Chrome(service=service, options=chrome_options)
+    # driver_1 = webdriver.Chrome(options=chrome_options)  # Для локальной работы
 
     browser = driver_1
     browser.get(URL_START)
@@ -96,3 +98,4 @@ def data_unit_iterator():
                 current_page = 0
         except:
             current_page += 1
+    driver_1.quit()

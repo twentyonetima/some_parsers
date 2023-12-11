@@ -119,13 +119,13 @@ def parse_section(entity_url):
     prefs_2 = {'profile.managed_default_content_settings.images': 2}
     chrome_options_2.add_experimental_option('prefs', prefs_2)
 
-    # service = Service(executable_path='/usr/bin/google-chrome')
+    service = Service(driver='/snap/bin/chromium.chromedriver')
     chrome_options_2.add_argument('--headless')
     chrome_options_2.add_argument('--no-sandbox')
     chrome_options_2.add_argument('--disable-dev-shm-usage')
     chrome_options_2.add_argument("--remote-debugging-port=9222")
 
-    driver_2 = webdriver.Chrome(options=chrome_options_2)
+    driver_2 = webdriver.Chrome(options=chrome_options_2, service=service)
     browser_2 = driver_2
     browser_2.get(URL_BASE + entity_url)
     file_text = browser_2.page_source

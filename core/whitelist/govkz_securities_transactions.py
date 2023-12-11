@@ -108,7 +108,7 @@ def data_transformer(record) -> BaseDataUnit:
         govkz_banking_is_parameter58=boolean_transformer(record['ddrcbbpvskvknd']),
         govkz_banking_is_parameter59=boolean_transformer(record['banking_operations']),
         govkz_banking_is_parameter60=boolean_transformer(record['other_operations']),
-        source='https://www.gov.kz/',
+        source='https://www.gov.kz/memleket/entities/ardfm/permissions-notifications/section/1/subsection/6/registry/15?lang=ru',
         country='Казахстан'
     )
     return data_unit
