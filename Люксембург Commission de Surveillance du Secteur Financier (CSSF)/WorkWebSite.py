@@ -1,21 +1,22 @@
 import time
-from googletrans import Translator, constants
-from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import requests
+from bs4 import BeautifulSoup
+from googletrans import Translator
+
+response = requests.get('https://www.cssf.lu/en/warnings/')
+soup = BeautifulSoup(response.content, 'html.parser')
 
 
-
-
-
-def change_using(driver, element_name, ):
+def change_using(soup, element_name, ):
     """
     Метод перехода по ссылкам
     :param element_name: имя селектора
-    :param driver:
+    :param soup:
     :return:
     """
-
-    find_elements = driver.find_elements(By.CSS_SELECTOR, element_name)
-
+    find_elements = soup.select(element_name)
     return find_elements
 
 
@@ -30,34 +31,18 @@ def time_out(times):
         time.sleep(times)
 
 
-def click_button(driver, name_button, times=None):
-    """
-    Метод клика по кнопке
-    :param name_button: имя кнопки
-    :param times: время паузы
-    :param driver: ссылка для клика
-    :return: 
-    """""
+def click_button(soup, name_button, times=None):
     button = None
-
     if name_button:
         time.sleep(times)
-        button = driver.find_element(By.CSS_SELECTOR, name_button)
+        button = soup.select_one(name_button)
     print('Click')
-    button.click()
 
 
-def next_page(items_elemts: list, find_element: str, deleted_text: str):
-    """
-    Функция перехода на следущую страницу и поиска необоходимых элементов в ней
-    :param items_elemts:  элементы на страницк
-    :param find_element:  какой элемент ищем
-    :param deleted_text:  что нужно убрать их текста
-    :return:
-    """
+def next_page(items_elements, find_element, deleted_text):
     read_files = []
-    for item in items_elemts:
-        for items2 in item.find_elements(By.CSS_SELECTOR, find_element):
+    for item in items_elements:
+        for items2 in item.select(find_element):
             if len(items2.text) <= 0 or items2.text == deleted_text:
                 read_files.append("")
             else:
@@ -65,102 +50,129 @@ def next_page(items_elemts: list, find_element: str, deleted_text: str):
     return read_files
 
 
-def test(url, driver, type_list):
-    """
-    Функция тестирования  парсера и дальнейщего запуска
-    :param drivers:
-    :return:
-    """
+def test(url, soup, type_list):
     translator = Translator()
     read_files = []
     json_dictionary = {}
     key = []
     value = []
-    all_dictonary = []
+    all_dictionary = []
     data_published_list = []
     page_number = 1
 
-    click_button(driver, ".cookie-btn", 3)
+    click_button(soup, ".cookie-btn", 3)
     time.sleep(3)
+
     while page_number < 28:
-        list_data = change_using(driver, ".library-element__title")
+        response = requests.get(url + "page/" + str(page_number))
+        soup = BeautifulSoup(response.content, 'html.parser')
+        list_data = change_using(soup, ".library-element__title")
         for i in list_data:
-            read_files.append(i.find_element(By.CSS_SELECTOR, 'a').get_attribute("href"))
+            href = i.select_one('a')['href']
+            read_files.append(href)
 
         for j in read_files:
-            driver.get(j)
-            data_published = driver.find_element(By.CSS_SELECTOR, ".single-news__date").text
+            response = requests.get(j)
+            inner_soup = BeautifulSoup(response.content, 'html.parser')
+            data_published = inner_soup.select_one(".single-news__date").text
             data_published_list.append(data_published)
-            items = driver.find_elements(By.CSS_SELECTOR, 'td')
+            items = inner_soup.select('td')
 
-            for k in range(len(items)):
+            time_out(3)
+            for k in range(0, len(items), 2):
                 if items[k].text != "":
-                    if items[k].text == 'Official contact details of the company':
-                        key.append("name")
-                        value.append(items[k + 2].text)
-                        break
-                    if k % 2 == 0:
-                        if items[k].text == "Company name used:" or items[k].text == "Company name:":
-                            key.append("name")
-                        elif items[k].text == "Email address used:" or items[k].text == "Email address:"\
-                                or items[k].text == "Email addresses used:" or items[k].text == "Email addresses:":
-                            key.append("email")
-                        elif items[k].text == "Phone number used:" or items[k].text == "Phone number:":
-                            key.append("phones")
-                        elif items[k].text == "Website used:" or items[k].text == "Website:" \
-                                or items[k].text == "Websites:" or items[k].text == "Websites used:":
-                            key.append("links")
-                        elif items[k].text == "Alleged registered office:":
-                            key.append("legal_entity_address")
-                        else:
-                            key.append(items[k].text)
+                    if k + 1 < len(items):
+                        key_val = items[k].text
+                        value_val = items[k + 1].text
 
-                    if k % 2 != 0:
-                        if items[k - 1].text == "Note:":
-                            translation = translator.translate(items[k].text, dest='ru')
-                            value.append(translation.text)
-                        else:
-                            if 'http://' in items[k].text or 'https://' in items[k].text or 'www.' in items[k].text:
-                                value.append([items[k].text.replace("\n", " "), ])
+                        if key_val == "Official contact details of the company":
+                            key_val = items[k + 1].text
+                            value_val = items[k + 2].text
+                        if key_val == "Warning:":
+                            key.append("Warning")
+                            value.append(value_val)
+                        if key_val == "Company name used:" or key_val == "Company name:" or key_val == "Name":
+                            key.append("name")
+                            # if '\n·\xa0\xa0' in value_val:
+                            #     match = re.search(r'^(.*?)\n·\xa0(.*?)$', value_val)
+                            #     if match:
+                            #         val = f'{match.group(1).strip()} {match.group(2).strip()}'
+                            #         value.append(val)
+                            # else:
+                            #     value.append(value_val)
+                            value.append(value_val)
+                        elif key_val == "Email address used:" or key_val == "Email address:"\
+                                or key_val == "Email addresses used:" or key_val == "Email addresses:":
+                            key.append("email")
+                            value.append(value_val)
+                        elif (key_val == "Phone number used:" or key_val == "Phone number:" or
+                              key_val == "Phone numbers used:"):
+                            key.append("phones")
+                            value.append(value_val)
+                        elif key_val == "Website used:" or key_val == "Website:" \
+                                or key_val == "Websites:" or key_val == "Websites used:":
+                            key.append("links")
+                            if '\n' in value_val:
+                                link_list = value_val.split('\n') 
+                                link_list = [link.strip() for link in link_list if link.strip()]
                             else:
-                                value.append(items[k].text.replace("\n", " "))
-                        # print("Value", items[k].text)
+                                link_list = []
+                                link_list.append(value_val)
+                            value.append(link_list)
+                        elif key_val == "Alleged registered office:":
+                            key.append("legal_entity_address")
+                            value.append(value.append(value_val))
+                        elif key_val == "Note:":
+                            key.append("remarks")
+                            translation = translator.translate(value_val, dest='ru')
+                            value.append(translation.text)
+
+        mylist = [x for x in value if x is not None]
+        print(len(key))
+        print(len(mylist))
 
         count = 0
-        print(len(key))
-        print(len(value))
-        chek = len(key)
 
-        for s in range(len(key)):
-
-            if s == 0:
-                if key[s] != "Warning:":
-                    json_dictionary[key[s]] = value[s]
-            else:
-                if key[s] != "Warning:":
-                    json_dictionary[key[s]] = value[s]
-                    if s == chek - 1:
-                        json_dictionary['data published'] = data_published_list[count]
-                        json_dictionary['type'] = type_list
-                        all_dictonary.append(json_dictionary)
-                        json_dictionary = {}
-                        count += 1
-                else:
-                    key.append("type")
-                    value.append(type_list)
-                    json_dictionary['data published'] = data_published_list[count]
+        for keys, values in zip(key, mylist):
+            if keys == 'Warning':
+                if json_dictionary:
+                    del json_dictionary['Warning']
                     json_dictionary['type'] = type_list
                     json_dictionary['Country'] = 'Luxembourg'
-                    all_dictonary.append(json_dictionary)
-                    json_dictionary = {}
+                    correct_date = data_published_list[count].split('Published on ')[1]
+                    json_dictionary['data published'] = correct_date
+                    all_dictionary.append(json_dictionary)
                     count += 1
+                    json_dictionary = {}
 
-        for x in all_dictonary:
+            json_dictionary[keys] = values
+        count = 0
+        all_dictionary.append(json_dictionary)
+
+        print(all_dictionary)
+
+        for x in all_dictionary:
             print(x.items())
         page_number += 1
         print("Page number", page_number)
         print(url + "page/" + str(page_number))
         time.sleep(3)
-        driver.get(url + "page/" + str(page_number))
 
-    return all_dictonary
+    return all_dictionary
+
+
+if __name__ == "__main__":
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--headless=new")
+    driver = webdriver.Chrome()
+    url = "https://www.cssf.lu/en/warnings/"
+    driver.get(url)
+
+    # Get the initial page content using requests and BeautifulSoup
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Call the test function from WorkWebsite.py
+    result = test(url, soup, "black_list")
+    # save = SaveHdd.save_json(result)
