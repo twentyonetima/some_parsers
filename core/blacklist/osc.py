@@ -119,3 +119,4 @@ def data_unit_iterator() -> BaseDataUnit:
                     except MaxRetryError:
                         sleep(60)
         page += 1
+    driver.quit()
