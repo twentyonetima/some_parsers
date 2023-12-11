@@ -1,86 +1,65 @@
 import re
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from bs4 import BeautifulSoup
 import time
-
-from selenium.webdriver.common.by import By
-
-
-def change_using(driver, element_name, ):
-    """
-    Метод перехода по ссылкам
-    :param element_name: имя селектора
-    :param driver:
-    :return:
-    """
-
-    find_elements = driver.find_elements(By.CSS_SELECTOR, element_name)
-
-    return find_elements
+# import SaveHdd
 
 
-def test(url, driver, type_list):
-    """
-    Функция тестирования и запуска парсера
-    :param drivers:
-    :return:
-    """
+def get_dynamic_page_content(url):
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--headless=new")
+    driver = webdriver.Chrome()
+    driver.get(url)
+    time.sleep(5)
+    content = driver.page_source
+    driver.quit()
+    return content
 
-    json_dictionary = {}
-    all_dictonary = []
+
+def test(url, type_list):
+    all_dictionary = []
     page_number = 1
-    time.sleep(3)
+
     while page_number < 80:
+        url_with_page = f"{url}?page={page_number}"
+        content = get_dynamic_page_content(url_with_page)
+        soup = BeautifulSoup(content, 'html.parser')
 
-        value = []
-        key = []
-        list_data = change_using(driver, ".mas-search-card")
-        button = change_using(driver, ".mas-search-card button")
-        data = driver.find_elements(By.CSS_SELECTOR, ".mas-ancillaries")
-        name = driver.find_elements(By.CSS_SELECTOR, ".ola-field-button")
-        buttn_number = 0
+        list_data = soup.select(".mas-search-card")
+        print()
+        for item in list_data:
+            print(item)
+            key = []
+            value = []
 
-        for i in range(len(list_data)):
-            # print(data[i].text)
-            if i < len(data):
+            data = item.select_one(".mas-ancillaries")
+            name = item.select_one(".ola-field-button")
+
+            if data:
                 key.append('date_publish')
-                split_data = data[i].text.split(":")
-                value.append(split_data[1])
-            else:
-                key.append('date_publish')
-                value.append("")
+                value.append(data.get_text(strip=True).split(":")[1])
 
-            items = name[i].text
+            items = name.get_text(strip=True)
             pattern = r"(?:https?:\/\/|ftps?:\/\/|www\.)(?:(?![.,?!;:()]*(?:\s|$))[^\s]){2,}"
             url2 = re.findall(pattern, items)
 
             if url2:
+                key.append("name")
+                value.append(url2[0])
                 key.append("links")
                 value.append([url2[0], ])
             else:
                 key.append('name')
-                value.append(name[i].text)
-            print()
-            button_check = list_data[i].find_elements(By.CSS_SELECTOR, "button")
-            if len(button_check) != 0:
-                if buttn_number <= len(button):
-                    time.sleep(5)
-                    button[buttn_number].click()
-                    # print(buttn_number)
-                    time.sleep(5)
-                    buttn_number += 1
-                    a2 = list_data[i].text
-                    parent_div = list_data[i].find_element(By.CLASS_NAME, 'masx-toggle-content')
-                    a1 = parent_div.text
-                    content_items = parent_div.find_elements(By.CLASS_NAME, 'masx-toggle-content__item')
+                value.append(name.get_text(strip=True))
 
-                    # Iterate through each content item
-                    for item in content_items:
-                        # Find the <h4> element within the current content item
-                        show_title = item.find_element(By.TAG_NAME, 'h4')
-                        a = show_title.text
-                        # Find the <p> element within the current content item
-                        show_p = item.find_element(By.TAG_NAME, 'p')
-                        b = show_p.text
-                        print(a, b)
+            dynamic_data = item.select_one('.masx-toggle-content')
+            if dynamic_data:
+                for content_item in dynamic_data.select('.masx-toggle-content__item'):
+                    show_title = content_item.select_one('h4')
+                    show_p = content_item.select_one('p')
+                    if show_title and show_p:
                         if show_title.text == "Phone Number:":
                             key.append("phone")
                             value.append(show_p.text)
@@ -110,69 +89,34 @@ def test(url, driver, type_list):
                         else:
                             key.append(show_title.text)
                             value.append(show_p.text)
-                    if "phone" not in key:
-                        key.append("phone")
-                        value.append("")
-                    if "email" not in key:
-                        key.append("email")
-                        value.append("")
-                    if "legal_entity_address" not in key:
-                        key.append("legal_entity_address")
-                        value.append("")
-                    # show_title = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content h4")
-                    # show_p = list_data[i].find_element(By.CSS_SELECTOR, ".masx-toggle-content p")
-                    # for element in elements:
-                    #     show_title = element.find_elements(By.TAG_NAME,'h4')
-                    #     show_p = element.find_elements(By.TAG_NAME,'p')
-                    #     if show_title.text == "Phone Number:":
-                    #         key.append("phone")
-                    #         value.append(show_p.text)
-                    #     elif show_title.text == "Website:":
-                    #         key.append("links")
-                    #         value.append([show_p.text, ])
-                    #     elif show_title.text == "Email:":
-                    #         key.append("email")
-                    #         value.append(show_p.text)
-                    #     elif show_title.text == "Address:":
-                    #         key.append("legal_entity_address")
-                    #         if "\n" in show_p.text:
-                    #             address = show_p.text.replace("\n", ' ')
-                    #             value.append(address)
-                    #         else:
-                    #             value.append(show_p.text)
-                    #     else:
-                    #         key.append(show_title.text)
-                    #         value.append(show_p.text)
-                    #     print("h4", show_title.text)
-                    #     print("p", show_p.text)
+                        if "phone" not in key:
+                            key.append("phone")
+                            value.append("")
+                        if "email" not in key:
+                            key.append("email")
+                            value.append("")
+                        if "legal_entity_address" not in key:
+                            key.append("legal_entity_address")
+                            value.append("")
 
-            count = 0
-            print(len(key))
-            print(len(value))
-            chek = len(key)
+            json_dictionary = dict(zip(key, value))
+            json_dictionary['type'] = type_list
+            json_dictionary['source'] = url
+            json_dictionary['Country'] = 'Singapore'
+            print(json_dictionary)
+            all_dictionary.append(json_dictionary)
 
-            for s in range(len(key)):
-
-                if count != len(key):
-                    count += 1
-                    val_key = key[s]
-                    val_val = value[s]
-                    print(val_key, val_val)
-                    json_dictionary[key[s]] = value[s]
-
-                    if count == len(key):
-                        json_dictionary['type'] = type_list
-                        json_dictionary['source'] = url
-                        json_dictionary['Country'] = 'Singapore'
-                        all_dictonary.append(json_dictionary)
-                        json_dictionary = {}
-                        count = 0
-                        key.clear()
-                        value.clear()
         page_number += 1
         print("Page number", page_number)
-        print(url + "?page=" + str(page_number))
-        driver.get(url + "?page=" + str(page_number))
-        time.sleep(5)
 
-    return all_dictonary
+    return all_dictionary  #Result of parsing
+
+
+if __name__ == "__main__":
+    url = "https://www.mas.gov.sg/investor-alert-list"
+    type_list = "black_list"
+
+    driver = webdriver.Chrome()
+    test_data = test(url, type_list)
+    # SaveHdd.save_json(test_data) # Save to json file
+    driver.quit()
