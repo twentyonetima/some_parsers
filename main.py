@@ -24,6 +24,7 @@ from core.blacklist import (cbr_unlicensing, cbr_warninglist, govkz_bannedbanks,
                             govkz_refund_organizations, govkz_bannedbanks_2level, govkz_unfairactivity_organization,
                             govkz_new_reestr, consob, sca, amf, sfc, fsa, asc,
                             fma_govt_nz_scams, osc, nssmc_ua, moneysmart_au, fsma, fca_uk, centralbank_ie,
+                            sec_gov, mas_sg, cssf_lu, sec_ph
                             )
 
 
