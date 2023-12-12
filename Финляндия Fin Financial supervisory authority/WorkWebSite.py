@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support import expected_conditions as EC
 
 
-from googletrans import Translator, constants
+from googletrans import Translator
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import re
@@ -58,23 +58,21 @@ def test(url, driver, type_list):
     click_button(driver, ".coi-banner__accept", 3)
     time.sleep(3)
 
-
     odd = change_using(driver, ".odd")
     even = change_using(driver, ".even")
     all_list = odd + even
     all_date = []
-
-    element = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '/html/body/main/div/div[2]/div[2]/article/div[2]/div/div/div/div[1]/div[1]/div/label/select/option[4]'))
-    )
-    element.click()
-    time.sleep(3)
-    for i in all_list:
-        for j in range(3):
-            all_date.append(i.find_elements(By.CSS_SELECTOR, "td")[j].text)
     count_data = 0
 
-    while page_number < 2:
+    while page_number < 21:
+        time.sleep(3)
+        for i in range(len(all_list)):
+            # Re-find the elements inside the loop
+            all_list = change_using(driver, ".odd") + change_using(driver, ".even")
+
+            for j in range(3):
+                all_date.append(all_list[i].find_elements(By.CSS_SELECTOR, "td")[j].text)
+        print(all_date)
         for k in range(len(all_date)):
 
             if count_data == 0:
@@ -100,6 +98,8 @@ def test(url, driver, type_list):
                 else:
                     if url:
                         print(url)
+                        key.append("name")
+                        value.append(url[0])
                         key.append("links")
                         value.append([url[0], ])
                     else:
@@ -118,11 +118,6 @@ def test(url, driver, type_list):
         print(len(value))
         chek = len(key)
 
-        # for keys in key:
-        #     print("Key:", keys)
-        # for values in value:
-        #     print("Values:", values)
-
         for s in range(len(key)):
 
             if count != 3:
@@ -133,15 +128,14 @@ def test(url, driver, type_list):
                 if count == 3:
                     json_dictionary['type'] = type_list
                     json_dictionary['Country'] = 'Finland'
+                    print(json_dictionary)
                     all_dictonary.append(json_dictionary)
                     json_dictionary = {}
                     count = 0
-                    # json_dictionary.clear()
-                    # key.clear()
-                    # value.clear()
-
-
-        # Clicking the "Next" button
+        key.clear()
+        value.clear()
+        all_date.clear()
+            # Clicking the "Next" button
         next_button_selector = ".pagination .next a"
         click_button(driver, next_button_selector, 3)
 
@@ -156,10 +150,6 @@ def test(url, driver, type_list):
         # Increment the page number
         page_number += 1
         print("Page number", page_number)
-        #
-        # click_button(driver, ".paginate_button next", 3)
-        # print("click")
-        # time.sleep(3)
 
     return all_dictonary
 
