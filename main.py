@@ -132,7 +132,11 @@ class Parsers:
             [centralbank.data_unit_iterator(), "Centralbank"],  # 40
             [eservices.data_unit_iterator(), "Реест подтвержденных финансовых учереждений Сингапура"],  # 41
             [fma.data_unit_iterator(), "Финансовый надзор Австрии"],  # 42
-        ][1:2]
+            [sec_gov.data_unit_iterator(), "Черный список.Предупреждение о незарегистрированных организациях"],  # 43
+            [mas_sg.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Сингапура"],  # 44
+            [cssf_lu.data_unit_iterator(), "Черный список. Список предупреждений Люксембурга"],  # 45
+            [sec_ph.data_unit_iterator(), "Черный список. Список предупреждений для инвесторов Филиппинов"],  # 46
+        ]
 
     @staticmethod
     def write_log_and_send_to_telegram(text: str, type_of_log: str = 'info') -> None:
