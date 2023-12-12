@@ -113,7 +113,7 @@ def test(url, soup, type_list):
                                 or key_val == "Websites:" or key_val == "Websites used:":
                             key.append("links")
                             if '\n' in value_val:
-                                link_list = value_val.split('\n') 
+                                link_list = value_val.split('\n')
                                 link_list = [link.strip() for link in link_list if link.strip()]
                             else:
                                 link_list = []
