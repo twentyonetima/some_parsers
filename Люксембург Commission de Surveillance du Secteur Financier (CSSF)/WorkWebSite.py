@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from googletrans import Translator
 
-response = requests.get('https://www.cssf.lu/en/warnings/')
+response = requests.get('https://www.cssf.lu/en/warnings/', timeout=20)
 soup = BeautifulSoup(response.content, 'html.parser')
 
 
@@ -64,7 +64,7 @@ def test(url, soup, type_list):
     time.sleep(3)
 
     while page_number < 28:
-        response = requests.get(url + "page/" + str(page_number))
+        response = requests.get(url + "page/" + str(page_number), timeout=20)
         soup = BeautifulSoup(response.content, 'html.parser')
         list_data = change_using(soup, ".library-element__title")
         for i in list_data:
@@ -72,7 +72,7 @@ def test(url, soup, type_list):
             read_files.append(href)
 
         for j in read_files:
-            response = requests.get(j)
+            response = requests.get(j, timeout=20)
             inner_soup = BeautifulSoup(response.content, 'html.parser')
             data_published = inner_soup.select_one(".single-news__date").text
             data_published_list.append(data_published)
@@ -170,7 +170,7 @@ if __name__ == "__main__":
     driver.get(url)
 
     # Get the initial page content using requests and BeautifulSoup
-    response = requests.get(url)
+    response = requests.get(url, timeout=20)
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # Call the test function from WorkWebsite.py
