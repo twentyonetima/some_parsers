@@ -1,11 +1,6 @@
-import asyncio
-import json
 import logging
-import time
 
-import aiohttp
 import requests
-from bs4 import BeautifulSoup
 
 from models import BaseDataUnit
 

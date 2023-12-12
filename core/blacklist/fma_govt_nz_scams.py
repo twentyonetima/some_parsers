@@ -15,6 +15,8 @@ from bs4 import BeautifulSoup
 import requests
 import json
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from slugify import slugify
 from deep_translator import GoogleTranslator
 
@@ -49,12 +51,6 @@ def translate(text_input):
         print(f'Error while translate: {e}')
         translation = text_input
     return translation
-
-
-def append_save_as_data(data_set):
-    global temp_list_file
-    to_write = ';'.join(data_set)
-    temp_list_file.append(to_write)
 
 
 def catch_firm_name_and_date(section):
@@ -119,10 +115,17 @@ def parce_text_to_tags(entity_to_parce, parsing_tags):
 
 
 def parse_section(entity_url):
-    chrome_options_2 = webdriver.ChromeOptions()
+    chrome_options_2 = Options()
     prefs_2 = {'profile.managed_default_content_settings.images': 2}
     chrome_options_2.add_experimental_option('prefs', prefs_2)
-    driver_2 = webdriver.Chrome(options=chrome_options_2)
+
+    service = Service(driver='/snap/bin/chromium.chromedriver')
+    chrome_options_2.add_argument('--headless')
+    chrome_options_2.add_argument('--no-sandbox')
+    chrome_options_2.add_argument('--disable-dev-shm-usage')
+    chrome_options_2.add_argument("--remote-debugging-port=9222")
+
+    driver_2 = webdriver.Chrome(options=chrome_options_2, service=service)
     browser_2 = driver_2
     browser_2.get(URL_BASE + entity_url)
     file_text = browser_2.page_source
@@ -145,7 +148,8 @@ def parse_section(entity_url):
             if item.find('strong'):
                 entity_to_parce = item
                 break
-
+    if entity_to_parce == '':
+        return ''
     strongs = entity_to_parce.find_all('strong')
 
     for item in strongs:
@@ -157,14 +161,23 @@ def parse_section(entity_url):
     return data_set_3
 
 
-def start_parse(full_url):
-    chrome_options_1 = webdriver.ChromeOptions()
+def data_unit_iterator():
+    global temp_list_file
+
+    chrome_options_1 = Options()
     prefs_1 = {'profile.managed_default_content_settings.images': 2}
     chrome_options_1.add_experimental_option('prefs', prefs_1)
+
+    service = Service(executable_path='/usr/bin/google-chrome')
+    chrome_options_1.add_argument('--headless')
+    chrome_options_1.add_argument('--no-sandbox')
+    chrome_options_1.add_argument('--disable-dev-shm-usage')
+    chrome_options_1.add_argument("--remote-debugging-port=9222")
+
     driver_1 = webdriver.Chrome(options=chrome_options_1)
     browser_1 = driver_1
 
-    url = full_url
+    url = FULL_URL
 
     data_set_1 = ['no data parsed. check the parser']
 
@@ -176,57 +189,40 @@ def start_parse(full_url):
 
         all_sections = soup.find_all('section')
         for section in all_sections:
+            # try:
+            entity_url = section.find('h3').find('a', href=True)['href']
+            data_set_1 = catch_firm_name_and_date(section)
+            data_set_1 += parse_section(entity_url)
+            global temp_list_file
+            to_write = ';'.join(data_set_1)
+            temp_list_file.append(to_write)
+            name_set_to_save = [key for key in NAME_SET]
+
+            firm_as_dict = dict(zip(name_set_to_save, data_set_1))
+            firm_as_dict['date_publish'] = translate(firm_as_dict['date_publish'])
+            if 'addresses_of_exchange_offices' in firm_as_dict:
+                firm_as_dict['addresses_of_exchange_offices'] = translate(
+                    firm_as_dict['addresses_of_exchange_offices'])
+            else:
+                firm_as_dict['addresses_of_exchange_offices'] = ''
+            links = firm_as_dict['link'].split(', ') if 'link' in firm_as_dict else []
+            email = firm_as_dict['email'].split('; ') if 'email' in firm_as_dict else ''
             try:
-                entity_url = section.find('h3').find('a', href=True)['href']
-                data_set_1 = catch_firm_name_and_date(section)
-                data_set_1 += parse_section(entity_url)
-                append_save_as_data(data_set_1)
-            except:
-                pass
+                data_unit = BaseDataUnit(
+                    name=firm_as_dict['name'],
+                    date_publish=firm_as_dict['date_publish'],
+                    type=firm_as_dict['type'],
+                    addresses_of_exchange_offices=firm_as_dict['addresses_of_exchange_offices'],
+                    links=links,
+                    email=email,
+                    source=FULL_URL,
+                    country='Новая Зеландия',
+                )
+                yield data_unit.model_dump_json()
+            except Exception as e:
+                logging.error(e)
+                logging.error(f"Error while atempt to transform following row")
         try:
             url = URL_BASE + soup.find('a', 'next page-link', href=True)['href']
         except:
             url = None
-
-
-def data_unit_iterator():
-    start_parse(FULL_URL)
-    """works fine"""
-    name_set_to_save = [key for key in NAME_SET]
-
-    for line in temp_list_file:
-        data = line.strip().split(';')
-        firm_as_dict = dict(zip(name_set_to_save, data))
-        firm_as_dict['date_publish'] = translate(firm_as_dict['date_publish'])
-        firm_as_dict['addresses_of_exchange_offices'] = translate(firm_as_dict['addresses_of_exchange_offices'])
-
-        # print(firm_as_dict)
-        # dict_to_save[url].append(firm_as_dict)
-
-        try:
-            data_unit = BaseDataUnit(
-                name=firm_as_dict['name'],
-                date_publish=firm_as_dict['date_publish'],
-                type=firm_as_dict['type'],
-                addresses_of_exchange_offices=firm_as_dict['addresses_of_exchange_offices'],
-                social_networks=[firm_as_dict['link']],
-                email=firm_as_dict['email'],
-                source=FULL_URL,
-                country='Новая Зеландия',
-            )
-            # print(
-            #     {
-            #     'name': firm_as_dict['name'],
-            #     'date_publish': firm_as_dict['date_publish'],
-            #     'type': firm_as_dict['type'],
-            #     'addresses_of_exchange_offices': firm_as_dict['addresses_of_exchange_offices'],
-            #     'social_networks': [firm_as_dict['link']],
-            #     'email': firm_as_dict['email'],
-            #     'source': FULL_URL,
-            #     'country': 'Новая Зеландия',
-            #     }
-            # )
-            yield data_unit.model_dump_json()
-        except Exception as e:
-            logging.error(e)
-            logging.error(f"Error while atempt to transform following row")

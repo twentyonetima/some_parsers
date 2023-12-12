@@ -1,11 +1,12 @@
-# 11
-# Украина
-# https://www.nssmc.gov.ua/activity/insha-diialnist/zakhyst-investoriv/#tab-2
-# Название организации, Сайт
-
-
+# # 11
+# # Украина
+# # https://www.nssmc.gov.ua/activity/insha-diialnist/zakhyst-investoriv/#tab-2
+# # Название организации, Сайт
+#
+#
 import json
 import logging
+import time
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -20,14 +21,9 @@ ref = 'black_list'
 URL_START = 'https://www.nssmc.gov.ua/activity/insha-diialnist/zakhyst-investoriv/#tab-2'
 URL_PREFIX = 'https://www.osc.ca'
 
-NAME_SET = ('name', 'social_networks', 'type')
+NAME_SET = ('name', 'links', 'type')
 
 temp_list_file = []
-
-
-def append_save_as_data(data_set):
-    global temp_list_file
-    temp_list_file.append(';'.join(data_set))
 
 
 def text_cleaner(text_to_clean):
@@ -36,27 +32,25 @@ def text_cleaner(text_to_clean):
     return text_cleaned
 
 
-def take_url(url):
+def data_unit_iterator():
     global ref
-
-    service = Service(driver='/chromedriver/')
-    # chrome_options = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": "/"}
-    # chrome_options.add_experimental_option("prefs", prefs)
 
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
+
+    chrome_options.add_argument("--remote-debugging-port=9222")  # локально с этой строчкой не работает
+    service = Service(driver='/snap/bin/chromium.chromedriver')
     driver_1 = webdriver.Chrome(service=service, options=chrome_options)
+    # driver_1 = webdriver.Chrome(options=chrome_options)  # Для локальной работы
 
     browser = driver_1
-    browser.get(url)
+    browser.get(URL_START)
 
     current_page = 1
 
     while current_page:
-
         file_text = browser.page_source
         soup = BeautifulSoup(file_text, features='lxml')
         data = soup.find('div', 'page-tab tab-2 page-tab_active')
@@ -69,39 +63,39 @@ def take_url(url):
             try:
                 name = text_cleaner(row.find('td', 'column-1').text)
                 www = text_cleaner(row.find('td', 'column-2').text)
-                append_save_as_data([name, www, ref])
+                data = [name, www, ref]
+
+                if name not in temp_list_file:
+                    temp_list_file.append(name)
+                    firm_as_dict = dict(zip(NAME_SET, data))
+
+                    try:
+                        data_unit = BaseDataUnit(
+                            name=firm_as_dict['name'],
+                            links=firm_as_dict['links'].split(' '),
+                            type=firm_as_dict['type'],
+                            source=URL_START,
+                            country='Украина',
+                        )
+                        yield data_unit.model_dump_json()
+                    except Exception as e:
+                        logging.error(e)
+                        logging.error(f"Error while atempt to transform following row")
             except:
                 pass
 
-        driver_1.find_element(By.ID, "tablepress-66_next").click()
+        # try:
+        # driver_1.find_element(By.ID, "tablepress-66_next").click()
+        element = driver_1.find_element(By.ID, 'tablepress-66_next')
+        driver_1.execute_script("arguments[0].click();", element)
+
+        time.sleep(2)
+        # except:
+        #     print()
+
         try:
             if soup.find('a', 'paginate_button next disabled'):
                 current_page = 0
         except:
             current_page += 1
-
-
-def data_unit_iterator():
-    take_url(URL_START)
-    global temp_list_file
-
-    result_list = []
-    for line in temp_list_file:
-        data = line.strip().split(';')
-        firm_as_dict = dict(zip(NAME_SET, data))
-
-        if firm_as_dict in result_list:
-            continue
-        result_list.append(firm_as_dict)
-        try:
-            data_unit = BaseDataUnit(
-                name=firm_as_dict['name'],
-                social_networks=[firm_as_dict['social_networks']],
-                type=firm_as_dict['type'],
-                source=URL_START,
-                country='Украина',
-            )
-            yield data_unit.model_dump_json()
-        except Exception as e:
-            logging.error(e)
-            logging.error(f"Error while atempt to transform following row")
+    driver_1.quit()
