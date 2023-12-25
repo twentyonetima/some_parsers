@@ -84,15 +84,23 @@ def parsing(url, type_list, soup):
                     if len(items) == 1 and len(template[x - 1].split(":")) == 1:
                         items_address = (template[x - 1] + " " + template[x])
                         key.append("legal_entity_address")
-                        translation = translator.translate(items_address, dest='ru')
-                        print(translation.text)
-                        value.append(translation.text)
+                        try:
+                            translation = translator.translate(items_address, dest='ru')
+                            value.append(translation.text)
+                        except Exception as e:
+                            print(f"Translation failed: {e}")
+                            print(items_address)
+                            value.append(items_address)
                     else:
                         items_address = (template[x - 1])
                         key.append("legal_entity_address")
-                        translation = translator.translate(items_address, dest='ru')
-                        print(translation.text)
-                        value.append(translation.text)
+                        try:
+                            translation = translator.translate(items_address, dest='ru')
+                            value.append(translation.text)
+                        except Exception as e:
+                            print(f"Translation failed: {e}")
+                            print(items_address)
+                            value.append(items_address)
 
                 if len(items) > 1:
                     if items[0] == "Phone":
@@ -173,4 +181,4 @@ if __name__ == "__main__":
     test = parsing(url, "black_list", soup)
 
     # Save the result to a JSON file
-    # save = SaveHdd.save_json(test)
+    save = SaveHdd.save_json(test)

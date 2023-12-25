@@ -61,7 +61,14 @@ def test(url, driver, type_list):
         data_value = driver.find_elements(By.CSS_SELECTOR, ".register p font")
         for i in range(len(data_key)):
             translators_key = translator.translate(data_key[i].text, dest="ru")
-            translators_value = translator.translate(data_value[i].text, dest="ru")
+            print(translators_key.text)
+            try:
+                translators_value = translator.translate(data_value[i].text, dest="ru")
+                print(translators_value.text)
+            except Exception as e:
+                print(f"Translation error for text: {data_value[i].text}")
+                print(f"Error message: {str(e)}")
+                translators_value = data_value[i].text
             if translators_key.text == "Выдавшая организация:":
                 key.append('organizational_and_legal_forms')
                 value.append(translators_value.text)
@@ -72,8 +79,9 @@ def test(url, driver, type_list):
                 value.append(translators_value.text)
                 key.append('addresses_of_exchange_offices')
             elif translators_key.text == "Участвующие организация/люди:":
-                value.append(data_value[i].text)
                 key.append('name')
+                print(data_value[i].text)
+                value.append(data_value[i].text)
             elif translators_key.text == "Соответствующая информация (информация для примечаний):":
                 key.append('remarks')
                 remarks_split = translators_value.text.split('\n')
@@ -91,80 +99,80 @@ def test(url, driver, type_list):
                 count = 0
 
                 while count != len(split_list_2):
-                    match count:
-                        case 1:
-                            key.append('name')
-                        case 2:
-                            key.append('organizational_and_legal_form')
+                    if count == 1:
+                        key.append('name')
+                    elif count == 2:
+                        key.append('organizational_and_legal_form')
+                        for j in range(len(split_list_2[count])):
+                            items = split_list_2[count][j]
+                            if items != "Адрес":
+                                string += items + " "
+                        value.append(string)
+                        string = ""
+                    elif count == 3:
+                        if len(split_list_2) == 8:
+                            key.append("number")
                             for j in range(len(split_list_2[count])):
                                 items = split_list_2[count][j]
-                                if items != "Адрес":
+                                if items != "Телефон":
                                     string += items + " "
                             value.append(string)
                             string = ""
-                        case 3:
-                            if len(split_list_2) == 8:
-                                key.append("number")
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != "Телефон":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
-                            else:
-                                key.append("email")
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != "Электронная" and items != "почта":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
-                        case 4:
-                            if len(split_list_2) == 8:
-                                key.append("email")
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != "Электронная" and items != "почта":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
-                            else:
-                                key.append('links')
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != "Сайт":
-                                        string += items + " "
-                                value.append([string, ])
-                                string = ""
-                        case 5:
-                            if len(split_list_2) == 8:
-                                key.append('social_networks')
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != "Сайт":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
-                            else:
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != " ":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
-                        case 6:
-                            if len(split_list_2) == 8:
-                                for j in range(len(split_list_2[count])):
-                                    items = split_list_2[count][j]
-                                    if items != " ":
-                                        string += items + " "
-                                value.append(string)
-                                string = ""
+                        else:
+                            key.append("email")
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != "Электронная" and items != "почта":
+                                    string += items + " "
+                            value.append(string)
+                            string = ""
+                    elif count == 4:
+                        if len(split_list_2) == 8:
+                            key.append("email")
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != "Электронная" and items != "почта":
+                                    string += items + " "
+                            value.append(string)
+                            string = ""
+                        else:
+                            key.append('links')
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != "Сайт":
+                                    string += items + " "
+                            value.append([string, ])
+                            string = ""
+                    elif count == 5:
+                        if len(split_list_2) == 8:
+                            key.append('social_networks')
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != "Сайт":
+                                    string += items + " "
+                            value.append(string)
+                            string = ""
+                        else:
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != " ":
+                                    string += items + " "
+                            value.append(string)
+                            string = ""
+                    elif count == 6:
+                        if len(split_list_2) == 8:
+                            for j in range(len(split_list_2[count])):
+                                items = split_list_2[count][j]
+                                if items != " ":
+                                    string += items + " "
+                            value.append(string)
+                            string = ""
+                    print(value)
                     count += 1
 
         count = 0
-        # print(len(key))
-        # print(len(value))
+        print(f'длина массива: {len(key)}, values of list: {key}')
+        print(f'длина массива: {len(value)}, values of list: {value}')
 
         for s in range(len(key)):
             if count != len(key):
@@ -175,6 +183,8 @@ def test(url, driver, type_list):
                     json_dictionary['source'] = url
                     all_dictonary.append(json_dictionary)
                     json_dictionary = {}
+                    key.clear()
+                    value.clear()
                     count += 1
 
         page_number += 1
@@ -182,5 +192,5 @@ def test(url, driver, type_list):
         button = driver.execute_script(" return document.querySelector('#MainContent_ucSearchResultButtons_btnBack')")
         button.click()
         time.sleep(5)
-
+        print(all_dictonary)
     return all_dictonary

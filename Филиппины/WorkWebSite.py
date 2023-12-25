@@ -72,4 +72,4 @@ def parsing(url, type_list):
 if __name__ == '__main__':
     url = "https://www.sec.gov.ph/investors-education-and-information/advisories/#gsc.tab=0"
     test = parsing(url, "black_list")
-    # save = SaveHdd.save_json(test)  # save to file
+    save = SaveHdd.save_json(test)  # save to file

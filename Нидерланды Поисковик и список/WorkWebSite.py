@@ -16,6 +16,16 @@ def change_using(driver, element_name, ):
     return find_elements
 
 
+def select_option_by_value(driver, select_css_selector, option_value):
+    select_element = driver.find_element(By.CSS_SELECTOR, select_css_selector)
+    options = select_element.find_elements(By.TAG_NAME, "option")
+
+    for option in options:
+        if option.get_attribute("value") == option_value:
+            option.click()
+            break
+
+
 def test(url, driver, type_list):
     """
     Функция тестирования  парсера и дальнейщего запуска
@@ -31,16 +41,18 @@ def test(url, driver, type_list):
     buttn_click = driver.find_element(By.CSS_SELECTOR, ".js-cookie-consent-all-btn")
     buttn_click.click()
 
-    while page_number < 162:
+    while page_number < 34:
         time.sleep(3)
         value = []
         key = []
         all_links = []
+        select_option_by_value(driver, "#numberOfResults", "100")
+        time.sleep(4)
         links = change_using(driver, ".register-result__title a")
-
+        print(len(links))
         for link in links:
             all_links.append(link.get_attribute("href"))
-
+        print(all_links)
         for i in range(len(all_links)):
             driver.get(all_links[link_number])
             print(link_number)
@@ -99,7 +111,7 @@ def test(url, driver, type_list):
                         json_dictionary['type'] = type_list
                         json_dictionary[
                             'source'] = f"https://www.dnb.nl/en/public-register/?p={str(page_number)}&l=20"
-                        json_dictionary['Country'] = 'Netherlands'
+                        # json_dictionary['Country'] = 'Netherlands'
                         all_dictonary.append(json_dictionary)
                         json_dictionary = {}
                         count = 0

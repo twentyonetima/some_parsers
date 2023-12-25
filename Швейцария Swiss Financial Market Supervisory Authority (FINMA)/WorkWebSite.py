@@ -30,14 +30,29 @@ def click_button(driver, name_button, times=None):
     :param times: время паузы
     :param driver: ссылка для клика
     :return: 
-    """""
+    """
     button = None
 
     if name_button:
         time.sleep(times)
-        button = driver.find_element(By.CSS_SELECTOR, name_button)
-    print('Click')
-    button.click()
+
+        # Introduce a WebDriverWait to wait for the element to be present in the DOM
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+
+        # Wait for a maximum of 10 seconds before throwing a TimeoutException
+        wait = WebDriverWait(driver, 10)
+
+        # Wait until the element is present in the DOM
+        try:
+            button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, name_button)))
+        except Exception as e:
+            print(f"Element with selector '{name_button}' not found. {e}")
+
+    if button:
+        print('Click')
+        button.click()
+
 
 
 def test(url, driver, type_list):
@@ -56,7 +71,7 @@ def test(url, driver, type_list):
     page_number = 0
     count_organization = 0
 
-    # click_button(driver, ".cookie-btn", 3)
+    click_button(driver, ".cookie-btn", 3)
     time.sleep(5)
     while page_number < 1:
         list_data = change_using(driver, ".text-link-std ")
@@ -82,13 +97,20 @@ def test(url, driver, type_list):
 
                 elif key_items[k].text == "Address":
                     key.append("legal_entity_address")
-                    translation = translator.translate(value_items[k].text, dest='ru')
-                    value.append(translation.text)
-
+                    try:
+                        translation = translator.translate(value_items[k].text, dest='ru')
+                        value.append(translation.text)
+                    except Exception as e:
+                        print(f"Translation failed: {e}")
+                        value.append(value_items[k].text)
                 elif key_items[k].text == "Commercial register":
                     key.append(key_items[k].text)
-                    translation = translator.translate(value_items[k].text, dest='ru')
-                    value.append(translation.text)
+                    try:
+                        translation = translator.translate(value_items[k].text, dest='ru')
+                        value.append(translation.text)
+                    except Exception as e:
+                        print(f"Translation failed: {e}")
+                        value.append(value_items[k].text)
 
                 elif key_items[k].text == "Remarks":
                     key.append(key_items[k].text)
@@ -108,8 +130,8 @@ def test(url, driver, type_list):
                     value.append(value_items[k].text)
 
         count = 0
-        # print("Len Key", len(key))
-        # print("Len Value", len(value))
+        print("Len Key", len(key))
+        print("Len Value", len(value))
         chek = len(key)
 
         for s in range(len(key)):
@@ -125,5 +147,5 @@ def test(url, driver, type_list):
         if count_organization >= 10:
             break
         page_number += 1
-
+        print(all_dictonary)
     return all_dictonary

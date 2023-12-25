@@ -53,7 +53,7 @@ def test(url, driver, type_list):
     value = []
     all_dictonary = []
     data_published_list = []
-    page_number = 0
+    page_number = 1
 
     click_button(driver, ".coi-banner__accept", 3)
     time.sleep(3)

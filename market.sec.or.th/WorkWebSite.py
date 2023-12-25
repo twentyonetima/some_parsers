@@ -1,89 +1,94 @@
 import time
-from googletrans import Translator, constants
-from selenium.webdriver.common.by import By
+from googletrans import Translator
+from bs4 import BeautifulSoup
+import requests
+import SaveHdd
 
-
-def change_using(driver, element_name, ):
+def get_page(url):
     """
-    Метод перехода по ссылкам
-    :param element_name: имя селектора
-    :param driver:
-    :return:
+    Function to get the HTML content of a page using requests.
+    :param url: URL of the page
+    :return: HTML content
     """
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.text
+    else:
+        raise Exception(f"Failed to retrieve page. Status code: {response.status_code}")
 
-    find_elements = driver.find_elements(By.CSS_SELECTOR, element_name)
-
+def change_using(html_content, element_name):
+    """
+    Method for finding elements using BeautifulSoup.
+    :param html_content: HTML content of the page
+    :param element_name: Name of the element to find
+    :return: List of found elements
+    """
+    soup = BeautifulSoup(html_content, 'html.parser')
+    find_elements = soup.select(element_name)
     return find_elements
 
-
-def next_page(items_elemts: list, find_element: str, deleted_text: str):
+def translate_text(text, dest="ru"):
     """
-    Функция перехода на следущую страницу и поиска необоходимых элементов в ней
-    :param items_elemts:  элементы на страницк
-    :param find_element:  какой элемент ищем
-    :param deleted_text:  что нужно убрать их текста
-    :return:
-    """
-    read_files = []
-    for item in items_elemts:
-        for items2 in item.find_elements(By.CSS_SELECTOR, find_element):
-            if len(items2.text) <= 0 or items2.text == deleted_text:
-                read_files.append("")
-            else:
-                read_files.append(items2.text)
-    return read_files
-
-
-def test(url, driver, type_list):
-    """
-    Функция тестирования  парсера и дальнейщего запуска
-    :param drivers:
-    :return:
+    Function to translate text using Google Translate.
+    :param text: Text to translate
+    :param dest: Destination language (default is Russian)
+    :return: Translated text or original text if translation fails
     """
     translator = Translator()
+
+    try:
+        translation = translator.translate(text, dest=dest)
+        translated_text = translation.text
+    except Exception as e:
+        print(f"Translation error for text: {text}")
+        print(f"Error message: {str(e)}")
+        translated_text = text  # Use the original text in case of an error
+
+    return translated_text
+
+def test(url, type_list):
+    """
+    Function to test the parser and perform further processing using BeautifulSoup.
+    :param url: URL to scrape
+    :param type_list: Type list parameter
+    :return: List of dictionaries
+    """
+    html_content = get_page(url)
+    soup = BeautifulSoup(html_content, 'html.parser')
+
     json_dictionary = {}
-    key = []
-    value = []
-    all_dictonary = []
-    page_number = 0
-    time.sleep(5)
-    button = driver.execute_script(" return document.querySelector('.btnCookiepopup')")
-    button.click()
-    time.sleep(5)
-    while page_number < 1:
-        list_data = change_using(driver, "tr")
-        print(len(list_data))
+    all_dictionary = []
 
-        for items in range(len(list_data)):
-            if items != 0:
-                key.append("data_publish")
-                val_dat = list_data[items].find_elements(By.CSS_SELECTOR, ".RgCol_Center")
-                value.append(val_dat[0].text)
-                key.append("name")
-                val_nam = (list_data[items].find_elements(By.CSS_SELECTOR, ".RgCol_Left"))
-                translate_value = translator.translate(val_nam[0].text, dest="ru")
-                value.append(translate_value.text)
+    # Handle cookie popup if necessary
 
-            count = 0
-            # print(len(key))
-            # print(len(value))
+    amount = 0
+    for items in soup.select("tr")[1:]:
+        key = "data_publish"
+        val_dat = items.select_one(".RgCol_Center").get_text(strip=True)
 
-            for s in range(len(key)):
+        key = "name"
+        val_nam = items.select_one(".RgCol_Left").get_text(strip=True)
+        amount += 1
+        print(amount)
+        print(val_nam)
 
-                if count != len(key):
-                    count += 1
-                    json_dictionary[key[s]] = value[s]
+        translated_name = translate_text(val_nam)
+        json_dictionary = {
+            "data_publish": val_dat,
+            "name": translated_name,
+            "type": type_list,
+            "source": url,
+            "Country": 'Philippines'
+        }
 
-                    if count == len(key):
-                        json_dictionary['type'] = type_list
-                        json_dictionary['source'] = url
-                        json_dictionary['Country'] = 'Philippines'
-                        all_dictonary.append(json_dictionary)
-                        json_dictionary = {}
-                        count += 1
+        all_dictionary.append(json_dictionary)
 
-            page_number += 1
-        if len(list_data) >= 100:
-            break
+    return all_dictionary
 
-    return all_dictonary
+
+url = "https://market.sec.or.th/public/idisc/en/Viewmore/invalert-head?PublicFlag=Y"
+type_list = "black_list"
+
+result = test(url, type_list)
+save = SaveHdd.save_json(result)
+print(result)

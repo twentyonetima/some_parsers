@@ -1,32 +1,16 @@
 import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 import requests
 from bs4 import BeautifulSoup
 from googletrans import Translator
-
-response = requests.get('https://www.cssf.lu/en/warnings/', timeout=20)
-soup = BeautifulSoup(response.content, 'html.parser')
+import SaveHdd
 
 
-def change_using(soup, element_name, ):
-    """
-    Метод перехода по ссылкам
-    :param element_name: имя селектора
-    :param soup:
-    :return:
-    """
+def change_using(soup, element_name):
     find_elements = soup.select(element_name)
     return find_elements
 
 
 def time_out(times):
-    """
-    Метод задержки паузы
-    :param times: время задержки
-    :return:
-    """
-
     if times:
         time.sleep(times)
 
@@ -64,7 +48,7 @@ def test(url, soup, type_list):
     time.sleep(3)
 
     while page_number < 28:
-        response = requests.get(url + "page/" + str(page_number), timeout=20)
+        response = requests.get(url + "page/" + str(page_number))
         soup = BeautifulSoup(response.content, 'html.parser')
         list_data = change_using(soup, ".library-element__title")
         for i in list_data:
@@ -72,9 +56,16 @@ def test(url, soup, type_list):
             read_files.append(href)
 
         for j in read_files:
-            response = requests.get(j, timeout=20)
+            try:
+                response = requests.get(j)
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching URL {j}: {e}")
+                continue
             inner_soup = BeautifulSoup(response.content, 'html.parser')
-            data_published = inner_soup.select_one(".single-news__date").text
+            try:
+                data_published = inner_soup.select_one(".single-news__date").text
+            except:
+                data_published = ""
             data_published_list.append(data_published)
             items = inner_soup.select('td')
 
@@ -93,13 +84,6 @@ def test(url, soup, type_list):
                             value.append(value_val)
                         if key_val == "Company name used:" or key_val == "Company name:" or key_val == "Name":
                             key.append("name")
-                            # if '\n·\xa0\xa0' in value_val:
-                            #     match = re.search(r'^(.*?)\n·\xa0(.*?)$', value_val)
-                            #     if match:
-                            #         val = f'{match.group(1).strip()} {match.group(2).strip()}'
-                            #         value.append(val)
-                            # else:
-                            #     value.append(value_val)
                             value.append(value_val)
                         elif key_val == "Email address used:" or key_val == "Email address:"\
                                 or key_val == "Email addresses used:" or key_val == "Email addresses:":
@@ -124,8 +108,12 @@ def test(url, soup, type_list):
                             value.append(value.append(value_val))
                         elif key_val == "Note:":
                             key.append("remarks")
-                            translation = translator.translate(value_val, dest='ru')
-                            value.append(translation.text)
+                            try:
+                                translation = translator.translate(value_val, dest='ru')
+                                value.append(translation.text)
+                            except Exception as e:
+                                print(f"Translation failed: {e}")
+                                value.append(value_val)
 
         mylist = [x for x in value if x is not None]
         print(len(key))
@@ -146,13 +134,13 @@ def test(url, soup, type_list):
                     json_dictionary = {}
 
             json_dictionary[keys] = values
-        count = 0
+
         all_dictionary.append(json_dictionary)
+        count = 0
+        key.clear()
+        value.clear()
+        mylist.clear()
 
-        print(all_dictionary)
-
-        for x in all_dictionary:
-            print(x.items())
         page_number += 1
         print("Page number", page_number)
         print(url + "page/" + str(page_number))
@@ -162,17 +150,15 @@ def test(url, soup, type_list):
 
 
 if __name__ == "__main__":
-    chrome_options = Options()
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless=new")
-    driver = webdriver.Chrome()
     url = "https://www.cssf.lu/en/warnings/"
-    driver.get(url)
 
-    # Get the initial page content using requests and BeautifulSoup
-    response = requests.get(url, timeout=20)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Call the test function from WorkWebsite.py
-    result = test(url, soup, "black_list")
-    # save = SaveHdd.save_json(result)
+        result = test(url, soup, "black_list")
+        save = SaveHdd.save_json(result)
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+

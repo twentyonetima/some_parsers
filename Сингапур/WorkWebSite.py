@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
-# import SaveHdd
+import SaveHdd
 
 
 def get_dynamic_page_content(url):
@@ -118,5 +118,5 @@ if __name__ == "__main__":
 
     driver = webdriver.Chrome()
     test_data = test(url, type_list)
-    # SaveHdd.save_json(test_data) # Save to json file
+    SaveHdd.save_json(test_data) # Save to json file
     driver.quit()
