@@ -6,13 +6,11 @@ import WorkWebSite
 # поключаем driver
 # region parametr Brauser
 chrome_options = Options()
-# chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--disable-gpu")
-# chrome_options.add_argument("--no-sandbox") # linux only
-chrome_options.add_argument("--headless=new")  # for Chrome >= 109
-# chrome_options.add_argument("--headless")
-# chrome_options.headless = True # also works
-driver = webdriver.Chrome()  # режим браузера:  options true безгаловый
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--remote-debugging-port=9222')
+driver = webdriver.Chrome(options=chrome_options)  # режим браузера:  options true безгаловый
 url = "https://www.finma.ch/en/finma-public/warning-list/"
 driver.get(url)
 # endregion

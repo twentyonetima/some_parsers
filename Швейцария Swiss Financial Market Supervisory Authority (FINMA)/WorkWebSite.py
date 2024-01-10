@@ -81,11 +81,12 @@ def test(url, driver, type_list):
             read_files.append(i.get_attribute("href"))
         for j in read_files:
             driver.get(j)
+            print(key)
+            print(value)
             count_organization += 1
             print("Number organization", count_organization)
             value_items = driver.find_elements(By.CSS_SELECTOR, 'td')
             key_items = driver.find_elements(By.CSS_SELECTOR, 'th')
-
             for k in range(len(key_items)):
                 if key_items[k].text == "Name":
                     key.append("name")
