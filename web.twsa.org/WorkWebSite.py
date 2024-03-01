@@ -90,6 +90,7 @@ def test(url, driver, type_list):
                 key.append('other')
                 value.append(translators_value.text)
             if i == 4:
+                print(translators_value.text)
                 split_list = translators_value.text.split(":")
                 split_list_2 = []
                 for j in split_list:
@@ -101,6 +102,7 @@ def test(url, driver, type_list):
                 while count != len(split_list_2):
                     if count == 1:
                         key.append('name')
+                        print(f'if-1 {value}')
                     elif count == 2:
                         key.append('organizational_and_legal_form')
                         for j in range(len(split_list_2[count])):
@@ -109,6 +111,7 @@ def test(url, driver, type_list):
                                 string += items + " "
                         value.append(string)
                         string = ""
+                        print(f'if-2 {value}')
                     elif count == 3:
                         if len(split_list_2) == 8:
                             key.append("number")
@@ -118,6 +121,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-3 {value}')
                         else:
                             key.append("email")
                             for j in range(len(split_list_2[count])):
@@ -126,6 +130,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-else-3 {value}')
                     elif count == 4:
                         if len(split_list_2) == 8:
                             key.append("email")
@@ -135,6 +140,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-4 {value}')
                         else:
                             key.append('links')
                             for j in range(len(split_list_2[count])):
@@ -143,6 +149,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append([string, ])
                             string = ""
+                            print(f'if-else-4 {value}')
                     elif count == 5:
                         if len(split_list_2) == 8:
                             key.append('social_networks')
@@ -152,6 +159,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-5 {value}')
                         else:
                             for j in range(len(split_list_2[count])):
                                 items = split_list_2[count][j]
@@ -159,6 +167,7 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-else-5 {value}')
                     elif count == 6:
                         if len(split_list_2) == 8:
                             for j in range(len(split_list_2[count])):
@@ -167,12 +176,13 @@ def test(url, driver, type_list):
                                     string += items + " "
                             value.append(string)
                             string = ""
+                            print(f'if-6 {value}')
                     print(value)
                     count += 1
 
         count = 0
-        print(f'длина массива: {len(key)}, values of list: {key}')
-        print(f'длина массива: {len(value)}, values of list: {value}')
+        # print(f'длина массива: {len(key)}, values of list: {key}')
+        # print(f'длина массива: {len(value)}, values of list: {value}')
 
         for s in range(len(key)):
             if count != len(key):

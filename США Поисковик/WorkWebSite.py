@@ -151,15 +151,16 @@ def parsing(url, type_list, soup):
                     key = []
         count_organization += 1
         # page_number += 1
-
     return all_dictionary
 
 
 if __name__ == "__main__":
     # region parameter Browser
     chrome_options = Options()
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument("--remote-debugging-port=9222")
     driver = webdriver.Chrome()
     url = "https://www.sec.gov/enforce/public-alerts"
     driver.get(url)

@@ -17,13 +17,18 @@ def change_using(driver, element_name, ):
 
 
 def select_option_by_value(driver, select_css_selector, option_value):
-    select_element = driver.find_element(By.CSS_SELECTOR, select_css_selector)
-    options = select_element.find_elements(By.TAG_NAME, "option")
+    try:
+        select_element = driver.find_element(By.CSS_SELECTOR, select_css_selector)
+        options = select_element.find_elements(By.TAG_NAME, "option")
+        time.sleep(5)
+        for option in options:
+            if option.get_attribute("value") == option_value:
+                print('Click')
+                option.click()
+                break
+    except Exception as e:
+        print(f"Element with selector  not found. {e}")
 
-    for option in options:
-        if option.get_attribute("value") == option_value:
-            option.click()
-            break
 
 
 def test(url, driver, type_list):
@@ -46,7 +51,7 @@ def test(url, driver, type_list):
         value = []
         key = []
         all_links = []
-        select_option_by_value(driver, "#numberOfResults", "100")
+        # select_option_by_value(driver, "#numberOfResults", "100")
         time.sleep(4)
         links = change_using(driver, ".register-result__title a")
         print(len(links))
